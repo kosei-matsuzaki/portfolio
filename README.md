@@ -2,6 +2,8 @@
 
 就職活動用の自己紹介・作品紹介サイト。Next.js（App Router）で作り、**静的ファイルとして書き出して GitHub Pages に公開**する構成です。
 
+**公開URL: https://kosei-matsuzaki.github.io/portfolio/**
+
 - 技術: Next.js 16 / React 19 / TypeScript / Tailwind CSS v4 / next/font（Inter・JetBrains Mono をビルド時に自前配信）
 - 出力: `next build` で `out/` に HTML・CSS・JS を書き出し（サーバ不要）
 - ページ: トップ（LP）1 枚 ＋ 作品ごとの詳細ページ（`/works/<slug>/`）
@@ -305,42 +307,45 @@ ffmpeg -i t1.mp4 -i t2.mp4 -i t3.mp4 -i t4.mp4 -filter_complex \
 
 ---
 
-## GitHub Pages へ公開する
+## 公開（GitHub Pages）
 
-### 1. リポジトリを作って push
+**公開済みです。** → https://kosei-matsuzaki.github.io/portfolio/
+
+| 項目 | 値 |
+|---|---|
+| リポジトリ | `kosei-matsuzaki/portfolio`（公開） |
+| ビルド | GitHub Actions（`.github/workflows/deploy.yml`） |
+| `NEXT_PUBLIC_BASE_PATH` | `/portfolio`（リポジトリの Variables に登録済み） |
+
+### 更新のしかた
+
+**`main` に push するだけ**で、ビルドから公開まで自動で走ります。
 
 ```bash
-cd portfolio-site
-git add -A
-git commit -m "ポートフォリオサイトを作成"
-gh repo create portfolio --public --source=. --push   # gh CLI を使う場合
-# もしくは GitHub で空リポジトリを作り、git remote add origin ... して push
+npm run check                 # 元リポジトリとのずれを確認
+npx tsc --noEmit && npm run lint && npm run build
+git add -A && git commit -m "..." && git push
 ```
 
-### 2. Pages を有効化
+デプロイの結果は `gh run list` か、GitHub の Actions タブで確認できます。
+CI では元リポジトリが無いので、参照の整合性だけ（`npm run check -- --refs`）を見ています。
+`projects.ts` から画像を消し忘れた、といった事故はここで止まります。
 
-GitHub のリポジトリ → **Settings → Pages → Build and deployment → Source** を
-**GitHub Actions** に設定します。
+### ローカルでサブディレクトリ配信を確認する
 
-### 3. basePath を設定（リポジトリ名で公開する場合のみ）
-
-`https://kosei-matsuzaki.github.io/portfolio/` のようにサブディレクトリで公開する場合、
-**Settings → Secrets and variables → Actions → Variables** に
-
-- Name: `NEXT_PUBLIC_BASE_PATH`
-- Value: `/portfolio`（リポジトリ名）
-
-を登録してください。リポジトリ名を `kosei-matsuzaki.github.io` にする場合や独自ドメインの場合は不要です。
-
-### 4. push すると自動で公開される
-
-`main` に push するたびに `.github/workflows/deploy.yml` がビルドして Pages に反映します。
-
-ローカルでサブディレクトリ配信を確認したいときは:
+本番と同じ `/portfolio/` 配下での見え方を確かめたいとき:
 
 ```bash
 NEXT_PUBLIC_BASE_PATH=/portfolio npm run build
+npx serve out               # http://localhost:3000/portfolio/ で確認
 ```
+
+### 別の場所に公開したくなったら
+
+- **独自ドメイン** … Settings → Pages → Custom domain。サブディレクトリでなくなるので
+  `NEXT_PUBLIC_BASE_PATH` の Variable を削除してビルドし直す
+- **Vercel** … リポジトリを接続するだけ。`basePath` は不要なので Variable は設定しない。
+  GitHub Pages と併用しても競合しない（同じリポジトリを両方から配信できる）
 
 ---
 

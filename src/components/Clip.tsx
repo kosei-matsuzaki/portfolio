@@ -123,7 +123,7 @@ export function Clip({
       className={`relative overflow-hidden border bg-surface-2 ${frame} ${className}`}
     >
       <Image
-        src={poster}
+        src={asset(poster)}
         alt={alt}
         width={w}
         height={h}

@@ -340,6 +340,21 @@ NEXT_PUBLIC_BASE_PATH=/portfolio npm run build
 npx serve out               # http://localhost:3000/portfolio/ で確認
 ```
 
+### 注意: `next/image` は basePath を自動で付けない
+
+`images.unoptimized: true`（静的書き出しに必須）だと、**`next/image` は `src` をそのまま出力します**。
+`next/link` は自動で付くのに Image は付かないので、サブディレクトリ配信だと画像だけ 404 になります。
+実際に公開直後にこれで壊しました。
+
+`public/` 配下を指すパスは、`<img>` / `<video>` だけでなく **`<Image>` の `src` も
+`asset()`（`src/lib/asset.ts`）を通してください**。
+`sizeOf()` に渡すキーは basePath なしの生パスのままにします。
+
+```tsx
+<Image src={asset(shot.src)} width={w} height={h} />   // ✓
+<Image src={shot.src} />                                // ✗ サブディレクトリで 404
+```
+
 ### 別の場所に公開したくなったら
 
 - **独自ドメイン** … Settings → Pages → Custom domain。サブディレクトリでなくなるので

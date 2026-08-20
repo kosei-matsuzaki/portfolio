@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { categoryMeta, shortRole, works, type Project } from "@/data/projects";
 import { sizeOf } from "@/data/imageSizes";
+import { asset } from "@/lib/asset";
 import { Clip } from "@/components/Clip";
 import {
   CategoryBadge,
@@ -76,7 +77,7 @@ function WorkRow({ project, no }: { project: Project; no: string }) {
               <div className="relative aspect-[16/10] w-full overflow-hidden border border-border bg-surface-2">
                 {cover && (
                   <Image
-                    src={cover.src}
+                    src={asset(cover.src)}
                     alt={cover.alt}
                     width={size.w}
                     height={size.h}

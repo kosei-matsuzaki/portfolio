@@ -366,7 +366,7 @@ export function Shot({
     <figure className={className}>
       <div className="relative overflow-hidden border border-border bg-surface-2">
         <Image
-          src={src}
+          src={asset(src)}
           alt={alt}
           width={w}
           height={h}

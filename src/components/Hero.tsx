@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { profile } from "@/data/profile";
 import { sizeOf } from "@/data/imageSizes";
+import { asset } from "@/lib/asset";
 import { Container, Label, btnGhost, btnPrimary } from "@/components/ui";
 
 /** ヒーロー右側の作品コラージュ（lg 以上でのみ表示） */
@@ -38,7 +39,7 @@ function HeroCollage() {
             style={{ zIndex: i + 1 }}
           >
             <Image
-              src={c.src}
+              src={asset(c.src)}
               alt={c.alt}
               width={w}
               height={h}

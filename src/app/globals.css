@@ -1,26 +1,148 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ===========================================================
+   デザイントークン（色・フォント）
+
+   全体の方向性は「実験ノート／計測レポート」。
+   ・面ではなく罫線（hairline）で領域を区切る
+   ・角丸はほぼ使わない（使っても 2〜4px）
+   ・番号・数値・ラベルは等幅（--font-mono）で、本文はサンセリフ
+   色を変えたいときは基本的にこのブロックだけを触れば全体に反映される
+   =========================================================== */
+@theme {
+  --color-bg: #07090e;
+  --color-surface: #0c1017;
+  --color-surface-2: #111721;
+  --color-border: #1b2230;
+  --color-border-strong: #2c3646;
+  --color-fg: #e7ecf4;
+  --color-muted: #939fb1;
+  --color-faint: #626e80;
+
+  /* アクセント（リンク・番号・強調）。作品の Fluid Lab と同系のラボブルー */
+  --color-accent: #7cc6ff;
+  --color-accent-soft: #0f2c47;
+  /* カテゴリ色 */
+  --color-teal: #5eead4;
+  --color-violet: #b48cff;
+  --color-amber: #fbbf24;
+  --color-blue: #7cc6ff;
+  --color-pink: #f472b6;
+
+  /* --font-inter / --font-mono-src は next/font（layout.tsx）が定義する */
+  --font-sans: var(--font-inter), "Helvetica Neue", "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans", "Noto Sans JP", "Yu Gothic UI", "Meiryo", system-ui,
+    sans-serif;
+  --font-mono: var(--font-mono-src), "SFMono-Regular", Consolas,
+    "Liberation Mono", Menlo, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "palt";
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 日本語見出しの改行位置を文節単位にする（対応ブラウザのみ） */
+h1,
+h2,
+h3 {
+  word-break: auto-phrase;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: #051a2b;
+}
+
+/* 数値は桁を揃える（計測値らしく見せる） */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------
+   背景：方眼紙（細かい格子＋粗い主線）とヒーローのグロー
+   ------------------------------------------------------------------ */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(148, 180, 220, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 180, 220, 0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgba(148, 180, 220, 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 180, 220, 0.09) 1px, transparent 1px);
+  background-size:
+    28px 28px,
+    28px 28px,
+    140px 140px,
+    140px 140px;
+  mask-image: radial-gradient(
+    ellipse 85% 65% at 50% 0%,
+    #000 35%,
+    transparent 100%
+  );
+}
+
+.glow {
+  background: radial-gradient(
+    ellipse 60% 55% at 50% -10%,
+    rgba(124, 198, 255, 0.14),
+    transparent 70%
+  );
+}
+
+/* ------------------------------------------------------------------
+   本文中のリンク下線をアクセント色でアニメーション
+   ------------------------------------------------------------------ */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease;
+}
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* ------------------------------------------------------------------
+   スクロールで要素をフェードインさせる（控えめ）
+
+   ・JS が動いたときだけ初期状態を隠す（`motion-ready` は Reveal.tsx が付ける）
+     → JS 無効・実行失敗でも本文は必ず見える
+   ・prefers-reduced-motion では一切適用しない
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .motion-ready [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Works の絞り込み（表示切替は CSS 側で行い、カードはサーバー描画のまま）
+   ------------------------------------------------------------------ */
+[data-works-filter="ai"] [data-category]:not([data-category="ai"]),
+[data-works-filter="game"] [data-category]:not([data-category="game"]),
+[data-works-filter="app"] [data-category]:not([data-category="app"]) {
+  display: none;
+}
+
+/* 図版（matplotlib 由来の白背景 SVG）を明るい面に載せる */
+.figure-light {
+  background: #ffffff;
+  padding: 0.75rem;
 }

@@ -1,0 +1,62 @@
+{
+  "keiba-ai": {
+    "repo": "artifacts/keiba-ai",
+    "head": "60696215bf39d007b71b9ac54c1e446a529802b6",
+    "copied": {
+      "/images/keiba-ai/dashboard.png": "afc274e227643caf",
+      "/images/keiba-ai/ledger.png": "9d49166c91f8a5c2",
+      "/images/keiba-ai/model-explainer-poster.png": "b252186b74688719",
+      "/images/keiba-ai/models.png": "a2a478426030fded",
+      "/images/keiba-ai/race-detail.png": "7a3a2b97bd72c8b8",
+      "/images/keiba-ai/race-list.png": "d6bdc08632b43944",
+      "/video/keiba-model-explainer.mp4": "e46c043570708e69"
+    }
+  },
+  "fluid-lab": {
+    "repo": "artifacts/fluid-lab",
+    "head": "78eeecee41c86f7ea88e2661d54edef75977f3a4",
+    "copied": {},
+    "recorded": {
+      "public/video/fluid-lab": "78eeecee41c86f7ea88e2661d54edef75977f3a4"
+    }
+  },
+  "gold-rush": {
+    "repo": "artifacts/medal",
+    "head": "8e9ef78c8034485857417af7a9a1673aaed88152",
+    "copied": {},
+    "recorded": {
+      "public/video/gold-rush": "8e9ef78c8034485857417af7a9a1673aaed88152"
+    }
+  },
+  "piano-studio": {
+    "repo": "artifacts/piano",
+    "head": "14fcc23e2811ff639e9019effd4d510a06e77bb9",
+    "copied": {},
+    "recorded": {
+      "public/video/piano-studio": "14fcc23e2811ff639e9019effd4d510a06e77bb9"
+    }
+  },
+  "michishirube": {
+    "repo": "artifacts/study-app",
+    "head": "d72393e5e38cda7d52efb5b42d3e54e39bf7fd7c",
+    "copied": {},
+    "recorded": {
+      "public/video/michishirube": "d72393e5e38cda7d52efb5b42d3e54e39bf7fd7c"
+    }
+  },
+  "chess-ai": {
+    "repo": "artifacts/My_Chess_AI",
+    "head": "2a613fa4f50ba7a10dc0f564331d10d5b4cbd4b1",
+    "copied": {
+      "/images/chess-ai/gameplay.png": "8830ebefbc990500"
+    }
+  },
+  "mc-eso": {
+    "repo": "research",
+    "head": null,
+    "copied": {
+      "/images/mc-eso/methods.svg": "b0d9598e7e46e700",
+      "/images/mc-eso/waterfall.svg": "48388c47e8e5df2e"
+    }
+  }
+}

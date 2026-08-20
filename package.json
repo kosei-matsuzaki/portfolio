@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sizes": "node scripts/gen-image-sizes.mjs",
+    "check": "node scripts/check-updates.mjs",
+    "assets:sync": "node scripts/sync-assets.mjs",
+    "icons": "node scripts/gen-tech-icons.mjs"
   },
   "dependencies": {
     "next": "16.3.1",
@@ -20,6 +24,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
+    "simple-icons": "^16.28.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

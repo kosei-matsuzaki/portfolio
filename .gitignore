@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 録画の中間ファイル（record-*.py / record-*.mjs）
+.rec-michishirube/

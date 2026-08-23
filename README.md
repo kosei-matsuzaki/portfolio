@@ -72,7 +72,7 @@ portfolio-site/
 │   ├── gen-image-sizes.mjs       npm run sizes
 │   ├── record-fluid-lab.mjs      Fluid Lab の実動作を録画（任意）
 │   ├── record-gold-rush.mjs      GOLD RUSH の実プレイを録画（任意）
-│   ├── record-piano-studio.mjs   Piano Studio の 4 モードを録画（任意）
+│   ├── record-piano-studio.mjs   Piano Studio の 4 本を録画（任意）
 │   └── record-michishirube.py    ミチシルベ（Flutter）を録画（任意・X11）
 └── .github/workflows/deploy.yml  GitHub Pages への自動デプロイ
 ```
@@ -195,7 +195,8 @@ bullets: [{ title: "...", text: "...", media: { poster, video, alt, caption } }]
 `scripts/record-*.mjs`（Fluid Lab / GOLD RUSH / Piano Studio）が、ヘッドレス Chromium で
 元リポジトリを実際に操作して録画します（前提と後処理はスクリプト冒頭のコメントに書いてあります）。
 GOLD RUSH は `?debug` で有効になる `window.__medal` を使って、スロット・円盤・JP チャレンジを
-直接起動しています。
+直接起動しています。Piano Studio だけは 1600×1000 で撮って 1280×800 に縮めます
+（アプリが幅 1280px 以下でインスペクタを自分から畳むため。縦横比は同じなので歪みません）。
 
 ミチシルベだけはブラウザ製ではないので `scripts/record-michishirube.py` を使います。
 Flutter の **Linux デスクトップ版**（元リポジトリで `flutter build linux --release`）を WSLg 上で

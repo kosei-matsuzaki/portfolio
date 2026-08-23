@@ -54,7 +54,7 @@ export const sources = [
       {
         dir: "public/video/piano-studio",
         command: "node scripts/record-piano-studio.mjs",
-        note: "4 モードの実動作。ポスター（public/images/piano-studio/*-poster.webp）も同時に作り直す",
+        note: "楽譜づくり・鍵盤演奏・AI 生成・音楽 Tips の 4 本。1600×1000 で撮って 1280×800 に縮める（1280 以下だとアプリがインスペクタを畳む）。ポスター（public/images/piano-studio/*-poster.webp）も同時に作り直す",
       },
     ],
   },

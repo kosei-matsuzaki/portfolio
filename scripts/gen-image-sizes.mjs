@@ -8,8 +8,10 @@
  */
 import { readdirSync, readFileSync, writeFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = new URL("..", import.meta.url).pathname;
+// URL#pathname は Windows で "/C:/..." を返すので fileURLToPath で正規化する
+const root = fileURLToPath(new URL("..", import.meta.url));
 const imagesDir = join(root, "public", "images");
 
 function walk(dir) {

@@ -3,9 +3,12 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, relative } from "node:path";
+import { fileURLToPath } from "node:url";
 
-export const ROOT = new URL("../../", import.meta.url).pathname; // portfolio-site/
-export const WORKSPACE = new URL("../../../", import.meta.url).pathname; // private_production/
+// URL#pathname は Windows で "/C:/..." を返してしまい、そのままでは
+// join / existsSync が全部外れる（元リポジトリが「見つかりません」になる）。
+export const ROOT = fileURLToPath(new URL("../../", import.meta.url)); // portfolio-site/
+export const WORKSPACE = fileURLToPath(new URL("../../../", import.meta.url)); // private_production/
 export const STATE_FILE = join(ROOT, "scripts", "assets-state.json");
 
 export function sha(file) {

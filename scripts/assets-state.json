@@ -30,10 +30,10 @@
   },
   "piano-studio": {
     "repo": "artifacts/piano",
-    "head": "14fcc23e2811ff639e9019effd4d510a06e77bb9",
+    "head": "6ede67f654fe51941dbb34e3aaafb941cb773e58",
     "copied": {},
     "recorded": {
-      "public/video/piano-studio": "14fcc23e2811ff639e9019effd4d510a06e77bb9"
+      "public/video/piano-studio": "6ede67f654fe51941dbb34e3aaafb941cb773e58"
     }
   },
   "michishirube": {

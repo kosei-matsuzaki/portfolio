@@ -86,7 +86,7 @@ export const sources = [
     slug: "chess-ai",
     title: "Chess AI",
     repo: "artifacts/My_Chess_AI",
-    copy: [{ from: "My project/image-10.png", to: "public/images/chess-ai/gameplay.png" }],
+    copy: [{ from: "docs/images/image-10.png", to: "public/images/chess-ai/gameplay.png" }],
     emit: { doc: "README.md", images: "docs/portfolio" },
   },
   {

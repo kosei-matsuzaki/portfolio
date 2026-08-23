@@ -1,7 +1,7 @@
 {
   "keiba-ai": {
     "repo": "artifacts/keiba-ai",
-    "head": "60696215bf39d007b71b9ac54c1e446a529802b6",
+    "head": "4cfb9b2250e0f845e98a6f4157181dc329e77b93",
     "copied": {
       "/images/keiba-ai/dashboard.png": "afc274e227643caf",
       "/images/keiba-ai/ledger.png": "9d49166c91f8a5c2",
@@ -14,39 +14,39 @@
   },
   "fluid-lab": {
     "repo": "artifacts/fluid-lab",
-    "head": "78eeecee41c86f7ea88e2661d54edef75977f3a4",
+    "head": "3c9e2b93b5001016a661a3a9e140f965f9b68f21",
     "copied": {},
     "recorded": {
-      "public/video/fluid-lab": "78eeecee41c86f7ea88e2661d54edef75977f3a4"
+      "public/video/fluid-lab": "3c9e2b93b5001016a661a3a9e140f965f9b68f21"
     }
   },
   "gold-rush": {
     "repo": "artifacts/medal",
-    "head": "c7b3fa6b74f0b94ecd92cf5f00006d3d1417338e",
+    "head": "d89a4dd3df4c9156c917761992b3ad2a6ea61bec",
     "copied": {},
     "recorded": {
-      "public/video/gold-rush": "c7b3fa6b74f0b94ecd92cf5f00006d3d1417338e"
+      "public/video/gold-rush": "d89a4dd3df4c9156c917761992b3ad2a6ea61bec"
     }
   },
   "piano-studio": {
     "repo": "artifacts/piano",
-    "head": "6ede67f654fe51941dbb34e3aaafb941cb773e58",
+    "head": "22136a510396f630851ce9bb4998c840c4a13656",
     "copied": {},
     "recorded": {
-      "public/video/piano-studio": "6ede67f654fe51941dbb34e3aaafb941cb773e58"
+      "public/video/piano-studio": "22136a510396f630851ce9bb4998c840c4a13656"
     }
   },
   "michishirube": {
     "repo": "artifacts/study-app",
-    "head": "96bfff82c3f0ac733ea1eea8b07557434f794b89",
+    "head": "b630b03a9fd25d8e0e23be7be17c76fcb21dffd5",
     "copied": {},
     "recorded": {
-      "public/video/michishirube": "96bfff82c3f0ac733ea1eea8b07557434f794b89"
+      "public/video/michishirube": "b630b03a9fd25d8e0e23be7be17c76fcb21dffd5"
     }
   },
   "chess-ai": {
     "repo": "artifacts/My_Chess_AI",
-    "head": "2a613fa4f50ba7a10dc0f564331d10d5b4cbd4b1",
+    "head": "4cc800aac0a1bcef0c6886b1988b42b3eccb14b2",
     "copied": {
       "/images/chess-ai/gameplay.png": "8830ebefbc990500"
     }

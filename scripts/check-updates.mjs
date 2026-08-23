@@ -8,7 +8,7 @@
  *   1. 参照の整合性 … src/ から参照しているのに public/ に無い素材、逆に誰も使っていない素材
  *   2. 取り込み素材 … 元リポジトリの画像が変わったのに取り込んでいない
  *   3. 録画素材     … 録画してから元リポジトリが進んでいる（撮り直しの検討）
- *   4. 書き戻し     … 元リポジトリの作品説明資料が projects.ts と食い違っている
+ *   4. 書き戻し     … 元リポジトリ README の作品説明ブロックが projects.ts と食い違っている
  *
  * 1 は元リポジトリが無くても動くので、CI でも実行できる。
  */
@@ -28,7 +28,7 @@ import {
   sha,
 } from "./lib/assets.mjs";
 import { loadProjects } from "./lib/projects.mjs";
-import { imagesToCopy, renderDoc } from "./lib/emit-doc.mjs";
+import { extractBlock, imagesToCopy, renderBlock } from "./lib/emit-doc.mjs";
 
 const refsOnly = process.argv.includes("--refs");
 const state = loadState();
@@ -149,7 +149,7 @@ for (const src of sources) {
 }
 
 /* ------------------------------------- 4. 元リポジトリへの書き戻し */
-console.log(c.bold("\n■ 元リポジトリの作品説明資料（projects.ts から生成）"));
+console.log(c.bold("\n■ 元リポジトリ README の作品説明ブロック（projects.ts から生成）"));
 
 const projects = new Map((await loadProjects()).map((p) => [p.slug, p]));
 let emitted = 0;
@@ -175,8 +175,10 @@ for (const src of sources) {
   const docPath = join(repoDir, src.emit.doc);
   if (!existsSync(docPath)) {
     stale.push("未生成");
-  } else if (readFileSync(docPath, "utf8") !== renderDoc(project, src)) {
-    stale.push("本文が projects.ts と違います");
+  } else {
+    const block = extractBlock(readFileSync(docPath, "utf8"));
+    if (block == null) stale.push("portfolio:begin / portfolio:end のマーカーがありません");
+    else if (block !== renderBlock(project, src)) stale.push("本文が projects.ts と違います");
   }
   for (const sitePath of imagesToCopy(project, src)) {
     const to = join(repoDir, src.emit.images, basename(sitePath));

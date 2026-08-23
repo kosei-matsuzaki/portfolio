@@ -1,17 +1,26 @@
 /**
- * projects.ts の 1 作品ぶんを、元リポジトリに置く Markdown（docs/PORTFOLIO.md）に組み立てる。
+ * projects.ts の 1 作品ぶんを、元リポジトリの README.md に埋める「作品説明ブロック」に組み立てる。
+ *
+ * GitHub でリポジトリを開いたとき最初に見えるのは root の README.md なので、作品説明はそこに置く。
+ * README のうち <!-- portfolio:begin --> 〜 <!-- portfolio:end --> の内側だけをこの生成器が持ち、
+ * 外側（ライセンス・クレジットなど元リポジトリ固有の記述）は手書きのまま残す。
+ * 動かし方・設計資料は docs/ に移し、ブロックの冒頭と末尾から docs/README.md へ送る。
  *
  * 生成する側とチェックする側の両方から呼ぶので、ここは「文字列を作るだけ」に留めて
  * ファイル I/O を持たせていない（同じ入力なら必ず同じ出力になる、が check の前提）。
  *
  * 載せないもの:
- *   - 動かし方・依存・ライセンス … README の担当。二重に書かない
+ *   - 動かし方・依存・ライセンス … docs/ と README 手書き部の担当。二重に書かない
  *   - 動画 … mp4 は portfolio-site にしか無いので、公開ページへのリンクで代える
  */
 import { basename, join, posix, relative } from "node:path";
 import { ROOT, WORKSPACE, expand } from "./assets.mjs";
 
 export const SITE = "https://kosei-matsuzaki.github.io/portfolio";
+export const BEGIN = "<!-- portfolio:begin -->";
+export const END = "<!-- portfolio:end -->";
+/** 開発者向けの入口。全リポジトリで同じ場所に置く */
+export const DOCS_INDEX = "docs/README.md";
 
 /** 生成物が参照する画像（/images/... のサイト内パス）を作品から集める */
 export function collectImages(project) {
@@ -53,7 +62,7 @@ function originalsInRepo(src) {
 }
 
 /**
- * docs/PORTFOLIO.md から見た画像の相対パスを返す関数を作る。
+ * 書き込み先（README.md）から見た画像の相対パスを返す関数を作る。
  * 元リポジトリに実物があればそれを、無ければ書き出し先（docs/portfolio/…）を指す。
  */
 export function makeHref(src) {
@@ -63,7 +72,25 @@ export function makeHref(src) {
   return (sitePath) => {
     const original = originals.get(slash(sitePath));
     const target = original ?? posix.join(imageDir, basename(sitePath));
-    return posix.relative(docDir, target) || basename(target);
+    const rel = posix.relative(docDir, target) || basename(target);
+    // 「My project/」のように空白を含むパスがある（Markdown のリンクが途中で切れる）
+    return rel.replace(/ /g, "%20");
+  };
+}
+
+/**
+ * 元リポジトリに実物がある素材だけを解決する関数を作る（無ければ null）。
+ * mp4 のように portfolio-site へコピーしてきた実体が元リポジトリにある場合、
+ * README からその実体を直接指せる。
+ */
+export function makeOriginalHref(src) {
+  const originals = originalsInRepo(src);
+  const docDir = posix.dirname(slash(src.emit.doc));
+  return (sitePath) => {
+    const original = originals.get(slash(sitePath));
+    if (!original) return null;
+    const rel = posix.relative(docDir, original) || basename(original);
+    return rel.replace(/ /g, "%20");
   };
 }
 
@@ -82,23 +109,45 @@ function figure(media, href) {
 }
 
 /**
+ * 作品説明ブロック（マーカー込み）を組み立てる。
+ *
  * @param project projects.ts の 1 要素
  * @param src     sources.mjs の 1 要素（emit / copy を見る）
  */
-export function renderDoc(project, src) {
+export function renderBlock(project, src) {
   const href = makeHref(src);
+  const original = makeOriginalHref(src);
+  const docsIndex =
+    posix.relative(posix.dirname(slash(src.emit.doc)), DOCS_INDEX) || DOCS_INDEX;
   const L = [];
 
-  L.push(`# ${project.title} — 作品説明資料`);
-  L.push("");
-  L.push("<!-- このファイルは自動生成です。直接編集しても次の生成で消えます。");
+  L.push(BEGIN);
+  L.push("<!-- ここから portfolio:end までは自動生成です。直接編集しても次の生成で消えます。");
   L.push(`     原本 : portfolio-site/src/data/projects.ts （slug: ${project.slug}）`);
   L.push("     生成 : cd portfolio-site && npm run docs:emit");
-  L.push("     点検 : cd portfolio-site && npm run check -->");
+  L.push("     点検 : cd portfolio-site && npm run check");
+  L.push("     マーカーの外（ライセンス・クレジットなど）は手書きのまま残ります -->");
+  L.push("");
+  L.push(`# ${project.title}`);
   L.push("");
   L.push(`> ${project.subtitle}`);
-  L.push(">");
-  L.push(`> 動画つきの版はこちら → **${SITE}/works/${project.slug}/**`);
+  L.push("");
+
+  /* --- 行き先の案内 ------------------------------------------------------ */
+  // GitHub で最初に見えるのはここ。作品ページ（動画つき）と開発者向けの入口を並べる。
+  const demoLink = (project.links ?? []).find((l) => l.kind === "demo");
+  // 公開ページに動画があるかどうかで案内の文言を変える（静止画だけの作品に「動画つき」と書かない）
+  const hasVideo = Boolean(
+    project.video ||
+      project.media?.video ||
+      (project.sections ?? []).some((sec) => (sec.bullets ?? []).some((b) => b.media?.video)),
+  );
+  const worksLabel = hasVideo ? "作品ページ（動画つき）" : "作品ページ";
+  const nav = [];
+  if (demoLink) nav.push(`**[▶ デモ](${demoLink.href})**`);
+  nav.push(`**[${worksLabel}](${SITE}/works/${project.slug}/)**`);
+  nav.push(`**[開発者向けドキュメント](${docsIndex})**`);
+  L.push(nav.join(" ・ "));
   L.push("");
 
   /* --- 諸元表 ------------------------------------------------------------ */
@@ -130,6 +179,20 @@ export function renderDoc(project, src) {
     };
     L.push(...figure(media, href(media.poster)));
     L.push("");
+  }
+
+  /* --- 解説動画 ---------------------------------------------------------- */
+  // mp4 の実体が元リポジトリにある作品（keiba-ai の manim 動画）だけ、ポスターから直接リンクする。
+  // 実体が portfolio-site にしか無い録画は、公開ページへのリンクで代える。
+  if (project.video) {
+    const mp4 = original(project.video.src);
+    const poster = original(project.video.poster);
+    if (mp4 && poster) {
+      L.push(`[![${project.video.caption}](${poster})](${mp4})`);
+      L.push("");
+      L.push(`*${project.video.caption}（サムネイルをクリックで再生・ダウンロード）*`);
+      L.push("");
+    }
   }
 
   if (project.highlights?.length) {
@@ -172,7 +235,9 @@ export function renderDoc(project, src) {
       }
     }
     if (sec.figure) {
-      L.push(...figure({ alt: sec.figure.alt, caption: sec.figure.caption }, href(sec.figure.src)));
+      L.push(
+        ...figure({ alt: sec.figure.alt, caption: sec.figure.caption }, href(sec.figure.src)),
+      );
       L.push("");
     }
   }
@@ -198,13 +263,37 @@ export function renderDoc(project, src) {
   /* --- 締め -------------------------------------------------------------- */
   L.push("---");
   L.push("");
-  const repoLink = (project.links ?? []).find((l) => l.kind === "repo");
-  const demoLink = (project.links ?? []).find((l) => l.kind === "demo");
-  const tail = ["動かし方・依存ライブラリ・ライセンスは [README](../README.md) を参照してください。"];
+  const tail = [
+    `動かし方・設計資料・開発メモは **[${docsIndex}](${docsIndex})** にまとめています。`,
+    `${hasVideo ? "動画つきの詳しい版" : "詳しい版"}: ${SITE}/works/${project.slug}/`,
+  ];
   if (demoLink) tail.push(`デモ: ${demoLink.href}`);
-  if (repoLink) tail.push(`リポジトリ: ${repoLink.href}`);
   L.push(tail.join("  \n"));
   L.push("");
+  L.push(END);
 
   return L.join("\n");
+}
+
+/** README から生成ブロックを取り出す。マーカーが無ければ null */
+export function extractBlock(text) {
+  const from = text.indexOf(BEGIN);
+  const to = text.indexOf(END);
+  if (from === -1 || to === -1 || to < from) return null;
+  return text.slice(from, to + END.length);
+}
+
+/**
+ * README の生成ブロックだけを差し替えた全文を返す。
+ * マーカーがまだ無いリポジトリでは先頭に差し込む（既存の本文は消さない）。
+ */
+export function spliceBlock(text, block) {
+  if (text == null) return block + "\n";
+  const from = text.indexOf(BEGIN);
+  const to = text.indexOf(END);
+  if (from === -1 || to === -1 || to < from) {
+    const rest = text.replace(/^\s+/, "");
+    return block + "\n" + (rest ? "\n" + rest : "");
+  }
+  return text.slice(0, from) + block + text.slice(to + END.length);
 }

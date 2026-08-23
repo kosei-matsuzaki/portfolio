@@ -1,8 +1,8 @@
 /**
  * src/data/projects.ts を node のスクリプトから読む。
  *
- * projects.ts は「サイトの内容の唯一の原本」で、元リポジトリの作品説明資料
- * （docs/PORTFOLIO.md）もここから生成する。素の node は TypeScript を読めないので、
+ * projects.ts は「サイトの内容の唯一の原本」で、元リポジトリ README の作品説明ブロック
+ * もここから生成する。素の node は TypeScript を読めないので、
  * 型注釈だけ落としてから data: URL として import している。
  *
  * projects.ts が他のモジュールを import しはじめたらこの手は使えなくなる

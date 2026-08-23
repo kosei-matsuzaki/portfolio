@@ -61,7 +61,7 @@ export function gitHead(repoRel) {
 /** 指定コミット以降のコミット数（分からなければ null）
  *
  *  `codeOnly` を付けると Markdown と docs/ に触れただけのコミットを数えない。
- *  作品説明資料はこちらから書き戻す（`npm run docs:emit`）ので、それを「元が進んだ、
+ *  作品説明はこちらから README に書き戻す（`npm run docs:emit`）ので、それを「元が進んだ、
  *  本文を見直せ」と鳴らし続けると警告が意味を失う。 */
 export function commitsSince(repoRel, from, { codeOnly = false } = {}) {
   const dir = join(WORKSPACE, repoRel);

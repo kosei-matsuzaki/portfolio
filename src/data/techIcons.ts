@@ -37,6 +37,7 @@ const RULES: [RegExp, string | GlyphName][] = [
   [/flutter|dart/i, "flutter"],
   [/riverpod/i, "code"],
   [/flutter_local|通知/i, "mobile"],
+  [/ios|app store|apple/i, "apple"],
   [/android|play console|google play/i, "android"],
   [/fastapi/i, "fastapi"],
   [/next\.js/i, "nextdotjs"],

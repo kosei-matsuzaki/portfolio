@@ -41,7 +41,7 @@ export const sources = [
       {
         dir: "public/video/gold-rush",
         command: "cd ../artifacts/medal && npm run build   # のあと node scripts/record-gold-rush.mjs",
-        note: "実プレイの録画。ポスター（public/images/gold-rush/*-poster.webp）も同時に作り直す",
+        note: "実プレイの録画（gameplay / sugoroku / bowl / chinchiro の 4 本 + hero）。ポスター（public/images/gold-rush/*-poster.webp）も同時に作り直す",
       },
     ],
   },
@@ -60,7 +60,8 @@ export const sources = [
   },
   {
     slug: "michishirube",
-    title: "ミチシルベ",
+    // アプリ名は 2026-08 に「ミチシルベ」→「ツミアゲ」へ改名。slug と素材のパスは旧名のまま
+    title: "ツミアゲ",
     repo: "artifacts/study-app",
     copy: [],
     recorded: [

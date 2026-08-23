@@ -15,7 +15,7 @@ const SLUGS = [
   "python", "typescript", "javascript", "cplusplus", "dotnet", "dart", "rust",
   "pytorch", "lightning", "numpy", "scipy", "scikitlearn",
   "fastapi", "react", "vite", "nextdotjs", "tailwindcss", "sqlite", "sqlalchemy",
-  "flutter", "android", "flask", "uv",
+  "flutter", "android", "apple", "flask", "uv",
   "threedotjs", "unity", "webassembly", "cmake", "webgl",
   "git", "github", "githubactions", "docker", "pytest", "vitest",
   "claude", "googlegemini", "jupyter", "googleplay",

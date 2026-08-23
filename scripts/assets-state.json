@@ -22,10 +22,10 @@
   },
   "gold-rush": {
     "repo": "artifacts/medal",
-    "head": "8e9ef78c8034485857417af7a9a1673aaed88152",
+    "head": "c7b3fa6b74f0b94ecd92cf5f00006d3d1417338e",
     "copied": {},
     "recorded": {
-      "public/video/gold-rush": "8e9ef78c8034485857417af7a9a1673aaed88152"
+      "public/video/gold-rush": "c7b3fa6b74f0b94ecd92cf5f00006d3d1417338e"
     }
   },
   "piano-studio": {
@@ -38,10 +38,10 @@
   },
   "michishirube": {
     "repo": "artifacts/study-app",
-    "head": "d72393e5e38cda7d52efb5b42d3e54e39bf7fd7c",
+    "head": "96bfff82c3f0ac733ea1eea8b07557434f794b89",
     "copied": {},
     "recorded": {
-      "public/video/michishirube": "d72393e5e38cda7d52efb5b42d3e54e39bf7fd7c"
+      "public/video/michishirube": "96bfff82c3f0ac733ea1eea8b07557434f794b89"
     }
   },
   "chess-ai": {

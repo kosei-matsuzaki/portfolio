@@ -68,8 +68,11 @@ portfolio-site/
 │   ├── sources.mjs               ★元リポジトリと素材の対応表（作品を足したらここにも）
 │   ├── check-updates.mjs         npm run check（更新漏れの検出）
 │   ├── sync-assets.mjs           npm run assets:sync（素材の取り込み）
+│   ├── emit-docs.mjs             npm run docs:emit（元リポジトリの作品説明資料を生成）
 │   ├── assets-state.json         取り込んだ時点の記録（自動生成）
 │   ├── gen-image-sizes.mjs       npm run sizes
+│   ├── lib/projects.mjs          projects.ts を node から読む（型注釈を落として import）
+│   ├── lib/emit-doc.mjs          作品 1 件 → Markdown（生成と check の両方が使う）
 │   ├── record-fluid-lab.mjs      Fluid Lab の実動作を録画（任意）
 │   ├── record-gold-rush.mjs      GOLD RUSH の実プレイを録画（任意）
 │   ├── record-piano-studio.mjs   Piano Studio の 4 本を録画（任意）
@@ -128,20 +131,26 @@ portfolio-site/
 npm run check          # 何がずれているかを表示（元リポジトリを見る）
 npm run assets:sync    # 画像・動画を取り込み直す
 npm run sizes          # 画像サイズ表を再生成
+npm run docs:emit      # 元リポジトリの作品説明資料を projects.ts から生成し直す
 ```
 
-`npm run check` が見るのは次の 3 点です。
+`npm run check` が見るのは次の 4 点です。
 
 | 見るもの | 何が分かるか |
 |---|---|
 | 参照の整合性 | `projects.ts` が指しているのに `public/` に無い素材／逆に誰も使っていない素材 |
 | 取り込み素材 | 元リポジトリの画像が変わったのに取り込んでいない |
 | 録画素材 | 録画してから元リポジトリが何コミット進んだか（撮り直しの検討） |
+| 書き戻し | 元リポジトリの `docs/PORTFOLIO.md` が `projects.ts` と食い違っていないか |
 
 さらに、元リポジトリのコミットが進んでいると
 **「本文・数値（metrics）が実態と合っているか確認してください」** と促します。
 画像は自動で追随できますが、`projects.ts` に書いた行数・テスト数・回収率などは
 自動では直らないので、ここは目視で見直してください。
+
+コミット数は **`.md` と `docs/` にしか触れていないコミットを除いて**数えています。
+作品説明資料はこちらから書き戻すので、それを「元が進んだ、本文を見直せ」と鳴らし続けると
+警告が意味を失うためです（「ドキュメントのみです」と出ているものがそれ）。
 
 対応表は `scripts/sources.mjs` の 1 ファイルに集約してあります。
 **作品を追加したら、ここにも 1 件足してください**（足さないと更新検出の対象外になります）。
@@ -150,6 +159,33 @@ npm run sizes          # 画像サイズ表を再生成
 参照の整合性チェックだけは元リポジトリが無くても動くので、
 GitHub Actions のデプロイでも `npm run check -- --refs` として走らせています
 （`projects.ts` から画像を消し忘れた、といった事故をデプロイ前に止められます）。
+
+### 元リポジトリの作品説明資料を生成する
+
+作品の説明はもともと「元リポジトリの `docs/PORTFOLIO.md`」と「このサイト」の 2 か所にあり、
+片方だけ更新されて必ず食い違っていました（実際、medal と piano は公開ページのほうが新しい、
+という逆転が起きていました）。いまは **`projects.ts` が唯一の原本**で、リポジトリ側は生成物です。
+
+```bash
+npm run docs:emit              # emit を持つ作品すべて
+npm run docs:emit gold-rush    # 指定した作品だけ
+```
+
+生成先は `scripts/sources.mjs` の `emit` に書きます。
+
+```js
+emit: { doc: "docs/PORTFOLIO.md", images: "docs/portfolio" },
+```
+
+- **生成物は「動かし方・依存・ライセンス」を持ちません。** そこは README の担当で、二重に書きません
+- 動画は portfolio-site にしか無いので、ポスター画像＋公開ページへのリンクで代えています
+- 元リポジトリに実物がある画像（keiba-ai の `docs/images/` など）は、`copy` の対応表を逆に辿って
+  そちらを参照します。同じ画像が 1 つのリポジトリに 2 つ入ることはありません
+- 参照が消えた画像は `docs/portfolio/` から削除されます（旧構成のスクショが残り続けるのを防ぐため）
+- 生成物がずれていないかは `npm run check` が見ます。ずれていたら、**直すのは `projects.ts` のほう**です
+
+書き出したあとは、それぞれの元リポジトリで内容を見てからコミットしてください
+（未コミットの作業が残っているリポジトリでは `git add` の範囲に注意）。
 
 ### 図版に動画を使う
 

@@ -8,6 +8,8 @@
  * - `repo`     : private_production からの相対パス（git リポジトリなら更新を追える）
  * - `copy`     : 元リポジトリからそのままコピーする素材
  * - `recorded` : 元リポジトリを動かして録画・生成した素材（コピーではないので自動同期できない）
+ * - `emit`     : 逆向き。projects.ts から元リポジトリの作品説明資料を生成する先
+ *                （`npm run docs:emit` が書き、`npm run check` がずれを見る）
  */
 export const sources = [
   {
@@ -18,6 +20,7 @@ export const sources = [
       { from: "docs/images", to: "public/images/keiba-ai" },
       { from: "docs/model-explainer.mp4", to: "public/video/keiba-model-explainer.mp4" },
     ],
+    emit: { doc: "docs/PORTFOLIO.md", images: "docs/portfolio" },
   },
   {
     slug: "fluid-lab",
@@ -31,6 +34,7 @@ export const sources = [
         note: "4 モードの実動作。ポスター（public/images/fluid-lab/*-poster.webp）も同時に作り直す",
       },
     ],
+    emit: { doc: "docs/PORTFOLIO.md", images: "docs/portfolio" },
   },
   {
     slug: "gold-rush",
@@ -44,6 +48,7 @@ export const sources = [
         note: "実プレイの録画（gameplay / sugoroku / bowl / chinchiro の 4 本 + hero）。ポスター（public/images/gold-rush/*-poster.webp）も同時に作り直す",
       },
     ],
+    emit: { doc: "docs/PORTFOLIO.md", images: "docs/portfolio" },
   },
   {
     slug: "piano-studio",
@@ -57,6 +62,7 @@ export const sources = [
         note: "楽譜づくり・鍵盤演奏・AI 生成・音楽 Tips の 4 本。1600×1000 で撮って 1280×800 に縮める（1280 以下だとアプリがインスペクタを畳む）。ポスター（public/images/piano-studio/*-poster.webp）も同時に作り直す",
       },
     ],
+    emit: { doc: "docs/PORTFOLIO.md", images: "docs/portfolio" },
   },
   {
     slug: "michishirube",

@@ -10,6 +10,7 @@
     "sizes": "node scripts/gen-image-sizes.mjs",
     "check": "node scripts/check-updates.mjs",
     "assets:sync": "node scripts/sync-assets.mjs",
+    "docs:emit": "node scripts/emit-docs.mjs",
     "icons": "node scripts/gen-tech-icons.mjs"
   },
   "dependencies": {

@@ -58,13 +58,20 @@ export function gitHead(repoRel) {
   }
 }
 
-/** 指定コミット以降のコミット数（分からなければ null） */
-export function commitsSince(repoRel, from) {
+/** 指定コミット以降のコミット数（分からなければ null）
+ *
+ *  `codeOnly` を付けると Markdown と docs/ に触れただけのコミットを数えない。
+ *  作品説明資料はこちらから書き戻す（`npm run docs:emit`）ので、それを「元が進んだ、
+ *  本文を見直せ」と鳴らし続けると警告が意味を失う。 */
+export function commitsSince(repoRel, from, { codeOnly = false } = {}) {
   const dir = join(WORKSPACE, repoRel);
+  const paths = codeOnly ? ["--", ".", ":(exclude)*.md", ":(exclude)docs"] : [];
   try {
-    return +execFileSync("git", ["-C", dir, "rev-list", "--count", `${from}..HEAD`], {
-      encoding: "utf8",
-    }).trim();
+    return +execFileSync(
+      "git",
+      ["-C", dir, "rev-list", "--count", `${from}..HEAD`, ...paths],
+      { encoding: "utf8" },
+    ).trim();
   } catch {
     return null;
   }

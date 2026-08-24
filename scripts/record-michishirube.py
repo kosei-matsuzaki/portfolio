@@ -13,12 +13,12 @@ puppeteer で録画しているが、この作品は Flutter アプリなので�
   2. 元リポジトリで Linux 版をビルド済みであること
          export PATH="$HOME/flutter/bin:$PATH"
          cd ../artifacts/study-app/app && flutter build linux --release
-  3. スクショ用のデモデータが ~/study_app.db.rec-base にあること
+  3. スクショ用のデモデータが ~/tsumiage.db.rec-base にあること
      （無ければ元リポジトリの `python3 tools/seed_demo_data.py` で作って cp する）
   4. python3 -c "import Xlib" が通ること（python-xlib）／ ffmpeg
 
 やっていること:
-  - 起動タブは環境変数 MICHISHIRUBE_TAB で選ぶ（1 窓の中を辿るより確実。元リポジトリの
+  - 起動タブは環境変数 TSUMIAGE_TAB で選ぶ（1 窓の中を辿るより確実。元リポジトリの
     tools/capture_screens.py と同じ手）
   - WSLg はルートウィンドウに中身を描かないので ffmpeg の x11grab では真っ黒になる。
     X の GetImage でウィンドウから直接フレームを吸い出して ffmpeg に流し込む
@@ -40,9 +40,9 @@ from Xlib import X, display
 from Xlib.ext import xtest
 
 ROOT = Path(__file__).resolve().parents[1]              # portfolio-site/
-APP = (ROOT.parent / "artifacts/study-app/app/build/linux/x64/release/bundle/study_app")
-DB = Path.home() / "study_app.db"
-DB_BASE = Path.home() / "study_app.db.rec-base"
+APP = (ROOT.parent / "artifacts/study-app/app/build/linux/x64/release/bundle/tsumiage")
+DB = Path.home() / "tsumiage.db"
+DB_BASE = Path.home() / "tsumiage.db.rec-base"
 WORK = ROOT / ".rec-michishirube"                        # 中間ファイル（.gitignore 済み）
 
 FPS = 30
@@ -125,11 +125,11 @@ POSTER_AT = {"today": 1.2, "plan": 1.2, "stats": 1.4,
 
 # ---------------------------------------------------------------- X まわり
 def find_window(dsp, root):
-    """タイトルが study_app の窓を探して (window, ルート座標 x, y) を返す。"""
+    """タイトルが tsumiage の窓を探して (window, ルート座標 x, y) を返す。"""
     for win in root.query_tree().children:
         for w in [win] + list(win.query_tree().children):
             try:
-                if w.get_wm_name() == "study_app":
+                if w.get_wm_name() == "tsumiage":
                     c = w.translate_coords(root, 0, 0)
                     return w, -c.x, -c.y
             except Exception:
@@ -138,23 +138,39 @@ def find_window(dsp, root):
 
 
 class Capture(threading.Thread):
-    """窓の中身を FPS 一定で吸い出して ffmpeg に流す。"""
+    """窓の中身を FPS 一定で吸い出して ffmpeg に流す。
 
-    def __init__(self, win, proc):
+    python-xlib の Display はスレッド安全ではないので、**操作側（warp_pointer /
+    fake_input / sync）とは別の接続を開く**。同じ接続を共有すると稀に応答待ちの
+    まま両方が固まる（settings クリップが 25 分ハングした）。
+    """
+
+    LIMIT = 180.0                                        # 保険。これを超えたら打ち切る
+
+    def __init__(self, win_id, proc):
         super().__init__(daemon=True)
-        self.win, self.proc, self.stop = win, proc, threading.Event()
+        self.win_id, self.proc, self.stop = win_id, proc, threading.Event()
 
     def run(self):
+        dsp = display.Display(":0")
+        win = dsp.create_resource_object("window", self.win_id)
         step = 1.0 / FPS
         nxt = time.monotonic()
-        while not self.stop.is_set():
+        end = nxt + self.LIMIT
+        try:
+            while not self.stop.is_set() and time.monotonic() < end:
+                try:
+                    img = win.get_image(0, 0, W, H, X.ZPixmap, 0xFFFFFFFF)
+                    self.proc.stdin.write(img.data[: W * H * 4])
+                except Exception:
+                    break
+                nxt += step
+                time.sleep(max(0.0, nxt - time.monotonic()))
+        finally:
             try:
-                img = self.win.get_image(0, 0, W, H, X.ZPixmap, 0xFFFFFFFF)
-                self.proc.stdin.write(img.data[: W * H * 4])
+                dsp.close()
             except Exception:
-                break
-            nxt += step
-            time.sleep(max(0.0, nxt - time.monotonic()))
+                pass
 
 
 # ---------------------------------------------------------------- 録画
@@ -165,7 +181,7 @@ def record(name):
 
     shutil.copyfile(DB_BASE, DB)                          # 毎回おなじ状態から始める
     env = {**os.environ, "DISPLAY": ":0", "GDK_BACKEND": "x11",
-           "MICHISHIRUBE_TAB": str(tab)}
+           "TSUMIAGE_TAB": str(tab)}
     app = subprocess.Popen([str(APP)], env=env,
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
@@ -190,7 +206,7 @@ def record(name):
             "-pix_fmt", "yuv420p", str(raw),
         ], stdin=subprocess.PIPE)
 
-        cap = Capture(win, ff)
+        cap = Capture(win.id, ff)
         cap.start()
 
         def warp(x, y):

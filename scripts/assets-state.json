@@ -1,13 +1,13 @@
 {
   "keiba-ai": {
     "repo": "artifacts/keiba-ai",
-    "head": "4cfb9b2250e0f845e98a6f4157181dc329e77b93",
+    "head": "3e008aece3021aeb499b7a8de73a32494a1c6508",
     "copied": {
       "/images/keiba-ai/dashboard.png": "1abc9b6f89b73e3b",
       "/images/keiba-ai/ledger.png": "f9828e870dd8cafa",
       "/images/keiba-ai/model-explainer-poster.png": "c19bce643b76eded",
       "/images/keiba-ai/models.png": "b204091325d74ef2",
-      "/images/keiba-ai/race-detail.png": "4e9991db4bba278a",
+      "/images/keiba-ai/race-detail.png": "95aa5bb87dad6d5e",
       "/images/keiba-ai/race-list.png": "160647d88ff7d3ad",
       "/video/keiba-model-explainer.mp4": "afdc2f4bd4f1db5c"
     }
@@ -38,10 +38,10 @@
   },
   "michishirube": {
     "repo": "artifacts/study-app",
-    "head": "b630b03a9fd25d8e0e23be7be17c76fcb21dffd5",
+    "head": "d37a017a37992fb3bc461d7b1513213ed64d922b",
     "copied": {},
     "recorded": {
-      "public/video/michishirube": "b630b03a9fd25d8e0e23be7be17c76fcb21dffd5"
+      "public/video/michishirube": "d37a017a37992fb3bc461d7b1513213ed64d922b"
     }
   },
   "chess-ai": {

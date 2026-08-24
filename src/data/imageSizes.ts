@@ -18,7 +18,7 @@ export const imageSizes: Record<string, { w: number; h: number }> = {
   "/images/keiba-ai/ledger.png": { w: 1920, h: 1080 },
   "/images/keiba-ai/model-explainer-poster.png": { w: 1920, h: 1080 },
   "/images/keiba-ai/models.png": { w: 1920, h: 900 },
-  "/images/keiba-ai/race-detail.png": { w: 1920, h: 1080 },
+  "/images/keiba-ai/race-detail.png": { w: 1920, h: 1123 },
   "/images/keiba-ai/race-list.png": { w: 1920, h: 1080 },
   "/images/michishirube/hero-poster.webp": { w: 390, h: 844 },
   "/images/michishirube/plan-poster.webp": { w: 390, h: 844 },

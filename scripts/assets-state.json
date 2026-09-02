@@ -38,18 +38,18 @@
   },
   "michishirube": {
     "repo": "artifacts/study-app",
-    "head": "18582afe40b7a2d30908a87d5801909dfa107fd3",
+    "head": "087524c9099fe466178da569397b345513628156",
     "copied": {},
     "recorded": {
-      "public/video/michishirube": "18582afe40b7a2d30908a87d5801909dfa107fd3"
+      "public/video/michishirube": "d37a017a37992fb3bc461d7b1513213ed64d922b"
     }
   },
   "tabishiori": {
     "repo": "artifacts/travel-app",
-    "head": "b492f60857c1df7ec068a734d70aadce73b04989",
+    "head": "c8dfb482b00e2ef300569182389c126815897a84",
     "copied": {},
     "recorded": {
-      "public/video/tabishiori": "b492f60857c1df7ec068a734d70aadce73b04989"
+      "public/video/tabishiori": "c8dfb482b00e2ef300569182389c126815897a84"
     }
   },
   "chess-ai": {

@@ -1014,7 +1014,13 @@ export const projects: Project[] = [
       { value: "23,900行", label: "手書きの Dart（生成コードを除く）" },
       { value: "114", label: "自動テスト（core は網羅、画面はスモーク）" },
     ],
-    links: [],
+    links: [
+      {
+        label: "App Store",
+        href: "https://apps.apple.com/app/id6806343789",
+        kind: "store",
+      },
+    ],
     note: "リポジトリは非公開のため、画面と設計のみ紹介しています。姉妹アプリの「ツミアゲ」と同じ考え方（導出できる値は保存しない）で作っています。",
     media: {
       poster: "/images/tabishiori/hero-poster.webp",

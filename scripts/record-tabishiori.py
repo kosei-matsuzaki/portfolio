@@ -40,8 +40,10 @@ from Xlib import X, display
 from Xlib.ext import xtest
 
 ROOT = Path(__file__).resolve().parents[1]              # portfolio-site/
-APP = (ROOT.parent
-       / "artifacts/travel-app/app/build/linux/x64/debug/bundle/tabishiori")
+# 別のチェックアウト（worktree など）から撮りたいときは TABISHIORI_APP で差し替える
+APP = Path(os.environ.get(
+    "TABISHIORI_APP",
+    ROOT.parent / "artifacts/travel-app/app/build/linux/x64/debug/bundle/tabishiori"))
 DEVROOT_LIB = Path.home() / "devroot/usr/lib/x86_64-linux-gnu"   # libsecret の置き場
 DB = Path.home() / ".local/share/com.sunl19ht.tabishiori/tabishiori.db"
 DB_BASE = Path.home() / "tabishiori.db.rec-base"
@@ -81,8 +83,14 @@ MAP_DAYS = [(43, 23), (111, 23), (176, 23), (241, 23)]     # 地図の すべて
 
 CLIPS = {
     # 日程 — 予定を開くと、その場に場所・書類・費用が出る。日をまたいで見せる
+    #
+    # **起動時に開く日は実時間で変わる**（デモデータは「今日が旅行の 2 日目」になるよう
+    # 日付を寄せてあり、日付をまたぐと開く日も動く）。日ごとに行の並びが違うので、
+    # 先に 1 日目を押して揃えてから座標で触る。
     "schedule": [
-        hold(2.4),
+        hold(2.0),
+        click(*DAY_TABS[0], 2.6),          # 1 日目にそろえる
+        hold(1.6),
         click(195, 625, 2.8),              # 台北101の展望台 を開く
         hold(2.6),
         click(195, 625, 1.8),              # 閉じる

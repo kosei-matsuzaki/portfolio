@@ -1,7 +1,7 @@
 {
   "keiba-ai": {
     "repo": "artifacts/keiba-ai",
-    "head": "97beac23a7b6bc25e15abdbfea52a558b6542fc0",
+    "head": "931ee4bb22bfc31e53405acaf1ee2e5fda881549",
     "copied": {
       "/images/keiba-ai/dashboard.png": "1abc9b6f89b73e3b",
       "/images/keiba-ai/ledger.png": "f9828e870dd8cafa",
@@ -38,18 +38,18 @@
   },
   "michishirube": {
     "repo": "artifacts/study-app",
-    "head": "3412ae6ffa7ee1304ded52e1a33345812494648e",
+    "head": "18582afe40b7a2d30908a87d5801909dfa107fd3",
     "copied": {},
     "recorded": {
-      "public/video/michishirube": "3412ae6ffa7ee1304ded52e1a33345812494648e"
+      "public/video/michishirube": "18582afe40b7a2d30908a87d5801909dfa107fd3"
     }
   },
   "tabishiori": {
     "repo": "artifacts/travel-app",
-    "head": "1d5e52d61c9930f62ba0f5774b80431bc6da6b5c",
+    "head": "b492f60857c1df7ec068a734d70aadce73b04989",
     "copied": {},
     "recorded": {
-      "public/video/tabishiori": "1d5e52d61c9930f62ba0f5774b80431bc6da6b5c"
+      "public/video/tabishiori": "b492f60857c1df7ec068a734d70aadce73b04989"
     }
   },
   "chess-ai": {

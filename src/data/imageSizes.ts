@@ -31,6 +31,11 @@ export const imageSizes: Record<string, { w: number; h: number }> = {
   "/images/piano-studio/play-poster.webp": { w: 1280, h: 800 },
   "/images/piano-studio/score-poster.webp": { w: 1280, h: 800 },
   "/images/piano-studio/tips-poster.webp": { w: 1280, h: 800 },
+  "/images/tabishiori/docs-poster.webp": { w: 390, h: 844 },
+  "/images/tabishiori/hero-poster.webp": { w: 390, h: 844 },
+  "/images/tabishiori/map-poster.webp": { w: 390, h: 844 },
+  "/images/tabishiori/money-poster.webp": { w: 390, h: 844 },
+  "/images/tabishiori/schedule-poster.webp": { w: 390, h: 844 },
 };
 
 export function sizeOf(src: string) {

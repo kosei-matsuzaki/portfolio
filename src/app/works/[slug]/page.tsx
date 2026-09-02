@@ -246,7 +246,7 @@ export default async function WorkPage({
                   href={l.href}
                   target="_blank"
                   rel="noreferrer"
-                  className={l.kind === "demo" ? btnPrimary : btnGhost}
+                  className={l.kind === "demo" || l.kind === "store" ? btnPrimary : btnGhost}
                 >
                   {l.label}
                 </a>

@@ -21,7 +21,7 @@ export const sources = [
     repo: "artifacts/keiba-ai",
     copy: [
       { from: "docs/images", to: "public/images/keiba-ai" },
-      { from: "docs/model-explainer.mp4", to: "public/video/keiba-model-explainer.mp4" },
+      { from: "docs/explainer/model-explainer.mp4", to: "public/video/keiba-model-explainer.mp4" },
     ],
     emit: { doc: "README.md", images: "docs/portfolio" },
   },
@@ -78,6 +78,20 @@ export const sources = [
         dir: "public/video/michishirube",
         command: "python3 scripts/record-michishirube.py",
         note: "Flutter の Linux 版（WSLg）を実際に操作した録画。ブラウザ製ではないので puppeteer ではなく X11 で撮る。ポスター（public/images/michishirube/*-poster.webp）も同時に作り直す",
+      },
+    ],
+    emit: { doc: "README.md", images: "docs/portfolio" },
+  },
+  {
+    slug: "tabishiori",
+    title: "タビシオリ",
+    repo: "artifacts/travel-app",
+    copy: [],
+    recorded: [
+      {
+        dir: "public/video/tabishiori",
+        command: "python3 scripts/record-tabishiori.py",
+        note: "Flutter の Linux 版（WSLg）を実際に操作した録画（日程 / 書類 / 費用 / 地図 の 4 本 + hero）。ツミアゲと同じ方式で、しおり一覧から 1 冊開いて下タブを辿る。ポスター（public/images/tabishiori/*-poster.webp）も同時に作り直す",
       },
     ],
     emit: { doc: "README.md", images: "docs/portfolio" },

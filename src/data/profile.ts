@@ -62,7 +62,7 @@ export const profile = {
 
   /** ヒーロー下の数値サマリ */
   stats: [
-    { value: "6", label: "個人開発作品" },
+    { value: "7", label: "個人開発作品" },
     { value: "2", label: "研究テーマ" },
     { value: "1", label: "チーム開発（インターン）" },
   ],

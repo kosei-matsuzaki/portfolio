@@ -129,7 +129,7 @@ function WorkRow({ project, no }: { project: Project; no: string }) {
                   rel="noreferrer"
                   className="font-mono text-[11px] tracking-[0.1em] text-faint transition-colors hover:text-fg"
                 >
-                  {l.kind === "demo" ? "デモ ↗" : "GitHub ↗"}
+                  {l.kind === "demo" ? "デモ ↗" : l.kind === "store" ? "App Store ↗" : "GitHub ↗"}
                 </a>
               ))}
             </div>

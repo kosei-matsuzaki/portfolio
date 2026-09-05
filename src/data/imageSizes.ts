@@ -22,6 +22,7 @@ export const imageSizes: Record<string, { w: number; h: number }> = {
   "/images/keiba-ai/race-list.png": { w: 1920, h: 1080 },
   "/images/michishirube/hero-poster.webp": { w: 390, h: 844 },
   "/images/michishirube/plan-poster.webp": { w: 390, h: 844 },
+  "/images/michishirube/schedule-poster.webp": { w: 390, h: 844 },
   "/images/michishirube/settings-poster.webp": { w: 390, h: 844 },
   "/images/michishirube/stats-poster.webp": { w: 390, h: 844 },
   "/images/michishirube/timer-poster.webp": { w: 390, h: 844 },

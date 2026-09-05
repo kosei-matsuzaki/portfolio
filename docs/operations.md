@@ -145,7 +145,7 @@ Flutter 製の 2 本はブラウザ製ではないので専用のスクリプト
 どちらも Flutter の **Linux デスクトップ版**を WSLg 上で起動し、X の GetImage で
 ウィンドウから直接フレームを吸い出して ffmpeg に流し込みます
 （WSLg はルートウィンドウに中身を描かないので `x11grab` では真っ黒になります）。
-操作は XTEST、ツミアゲの起動タブは環境変数 `MICHISHIRUBE_TAB` で選びます。
+操作は XTEST、ツミアゲの起動タブは環境変数 `TSUMIAGE_TAB` で選びます。
 
 **ビルドの種類はアプリごとに違います。**タビシオリは `flutter build linux --debug`。
 `--release` にすると install 先が `/usr/local` になり、sudo の無い端末では

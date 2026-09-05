@@ -329,7 +329,7 @@ def main():
     want = sys.argv[1:] or [*CLIPS, "hero"]   # 引数なしで全部（hero は録り直さず連結だけ）
     if not APP.exists():
         sys.exit(f"Linux 版が見つかりません: {APP}\n"
-                 "  cd ../artifacts/travel-app/app && flutter build linux --release")
+                 "  cd ../artifacts/travel-app/app && flutter build linux --debug")
     if not DB_BASE.exists():
         sys.exit(f"デモデータがありません: {DB_BASE}")
 

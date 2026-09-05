@@ -412,7 +412,7 @@ export default async function WorkPage({
                 </h2>
               </div>
               <p className="mt-4 text-body text-muted sm:mt-5 sm:text-body-sm">
-                本プロジェクトは AI コーディングエージェント（Claude
+                AI コーディングエージェント（Claude
                 Code）を併用して開発しました。役割分担と、任せきりにしないための仕組みは次のとおりです。
               </p>
               <ul className="mt-5 space-y-2.5">

@@ -5,10 +5,10 @@ import { MobileNav } from "@/components/MobileNav";
 
 /** 番号はトップページのセクション（§01〜）と対応させている */
 export const navItems = [
-  { href: "/#works", index: "01", label: "Works" },
-  { href: "/#research", index: "02", label: "Research" },
-  { href: "/#internship", index: "03", label: "Internship" },
-  { href: "/#skills", index: "04", label: "Skills" },
+  { href: "/#works", index: "01", label: "作品" },
+  { href: "/#research", index: "02", label: "研究" },
+  { href: "/#internship", index: "03", label: "インターン" },
+  { href: "/#skills", index: "04", label: "技術" },
 ];
 
 export function SiteHeader() {
@@ -19,7 +19,7 @@ export function SiteHeader() {
       >
         <Link
           href="/"
-          className="font-mono text-[11px] tracking-[0.2em] whitespace-nowrap text-fg uppercase transition-colors hover:text-accent"
+          className="text-small whitespace-nowrap text-fg transition-colors hover:text-muted"
         >
           {profile.nameEn}
         </Link>
@@ -29,9 +29,9 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="group flex items-baseline gap-1.5 font-mono text-[11px] tracking-[0.14em] text-muted uppercase transition-colors hover:text-fg"
+              className="group flex items-baseline gap-1.5 text-small text-muted transition-colors hover:text-fg"
             >
-              <span className="hidden text-[9px] text-faint transition-colors group-hover:text-accent lg:inline">
+              <span className="hidden text-micro text-faint transition-colors group-hover:text-muted lg:inline">
                 {item.index}
               </span>
               {item.label}
@@ -43,7 +43,7 @@ export function SiteHeader() {
           href={profile.github}
           target="_blank"
           rel="noreferrer"
-          className="hidden border border-border-strong px-3 py-1 font-mono text-[11px] tracking-[0.14em] text-muted uppercase transition-colors hover:border-accent hover:text-accent md:inline-flex"
+          className="hidden border border-border-strong px-3 py-1 text-micro text-muted transition-colors hover:border-fg hover:text-fg md:inline-flex"
         >
           GitHub
         </a>

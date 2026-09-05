@@ -46,7 +46,7 @@ function HeroCollage() {
               sizes="420px"
               className="h-auto w-full"
             />
-            <span className="absolute top-0 left-0 border-r border-b border-border-strong bg-bg/80 px-1.5 py-0.5 font-mono text-[9px] tracking-[0.18em] text-faint">
+            <span className="absolute top-0 left-0 border-r border-b border-border-strong bg-bg/80 px-1.5 py-0.5 text-micro text-faint">
               {c.plate}
             </span>
           </div>
@@ -60,16 +60,16 @@ function HeroCollage() {
 function SpecSheet() {
   const rows = [
     {
-      label: "NAME",
+      label: "氏名",
       value: profile.nameJa
         ? `${profile.nameJa}（${profile.nameEn}）`
         : profile.nameEn,
     },
     {
-      label: "AFFILIATION",
+      label: "所属",
       value: `${profile.affiliation}${profile.lab ? ` ${profile.lab}` : ""}`,
     },
-    { label: "FOCUS", value: profile.keywords.join(" / ") },
+    { label: "関心", value: profile.keywords.join(" / ") },
   ];
 
   return (
@@ -77,12 +77,12 @@ function SpecSheet() {
       {rows.map((row) => (
         <div
           key={row.label}
-          className="grid gap-1 py-2.5 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:items-baseline sm:gap-4"
+          className="grid gap-1 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)] sm:items-baseline sm:gap-4"
         >
           <dt>
             <Label className="text-faint">{row.label}</Label>
           </dt>
-          <dd className="text-[13px] leading-relaxed text-muted">{row.value}</dd>
+          <dd className="text-small text-muted sm:text-small-sm">{row.value}</dd>
         </div>
       ))}
     </dl>
@@ -99,15 +99,13 @@ export function Hero() {
       <Container className="relative pt-14 pb-14 sm:pt-20 sm:pb-20 lg:pt-24">
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           <div>
-            <Label className="text-accent">[ Portfolio / 2026 ]</Label>
-
-            <h1 className="mt-5 max-w-2xl text-[1.75rem] leading-[1.4] font-bold tracking-tight sm:text-[2.5rem] sm:leading-[1.28]">
+            <h1 className="max-w-2xl text-display font-semibold sm:text-display-sm">
               {profile.tagline}
             </h1>
 
             <SpecSheet />
 
-            <p className="mt-7 max-w-xl text-[14px] leading-[1.95] text-muted sm:text-[15px]">
+            <p className="mt-7 max-w-xl text-body text-muted sm:text-body-sm">
               {profile.intro}
             </p>
 
@@ -132,10 +130,10 @@ export function Hero() {
         <dl className="mt-14 grid max-w-xl grid-cols-3 divide-x divide-border sm:mt-16">
           {profile.stats.map((s) => (
             <div key={s.label} className="flex flex-col gap-1 py-4 pl-4 first:pl-0 sm:pl-5">
-              <dd className="tnum font-mono text-2xl font-bold text-fg sm:text-3xl">
+              <dd className="text-h1 font-semibold text-fg sm:text-h1-sm">
                 {s.value}
               </dd>
-              <dt className="text-[11px] leading-snug text-faint">{s.label}</dt>
+              <dt className="text-micro leading-snug text-faint">{s.label}</dt>
             </div>
           ))}
         </dl>

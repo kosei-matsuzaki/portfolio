@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import {
   getProject,
+  linkMeta,
   projects,
   type Section as SectionData,
 } from "@/data/projects";
@@ -10,19 +12,16 @@ import { isPortrait } from "@/data/imageSizes";
 import { asset } from "@/lib/asset";
 import { Clip } from "@/components/Clip";
 import {
-  CategoryBadge,
   Container,
-  Figure,
   IndexNo,
   Label,
   MetricList,
   Plate,
   RichText,
-  Shot,
-  TechChips,
   btnGhost,
   btnPrimary,
 } from "@/components/ui";
+import { CategoryBadge, Figure, Shot, TechChips } from "@/components/parts";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -58,7 +57,7 @@ function SectionBlock({
     >
       <div className="flex items-baseline gap-3">
         <IndexNo>§{no}</IndexNo>
-        <h2 className="text-lg font-bold tracking-tight sm:text-2xl">
+        <h2 className="text-h2 font-semibold sm:text-h2-sm">
           {section.heading}
         </h2>
       </div>
@@ -66,7 +65,7 @@ function SectionBlock({
       {section.body?.map((p) => (
         <p
           key={p}
-          className="mt-4 text-[14px] leading-[1.95] text-muted sm:mt-5 sm:text-[15px]"
+          className="mt-4 text-body text-muted sm:mt-5 sm:text-body-sm"
         >
           <RichText>{p}</RichText>
         </p>
@@ -101,7 +100,7 @@ function SectionBlock({
                     }
                   />
                   {b.media.caption && (
-                    <figcaption className="mt-2.5 text-[12px] leading-relaxed text-faint">
+                    <figcaption className="mt-2.5 text-micro text-faint">
                       {b.media.caption}
                     </figcaption>
                   )}
@@ -109,12 +108,12 @@ function SectionBlock({
               )}
               <div className={i % 2 === 1 ? "sm:order-1" : undefined}>
                 {b.title && (
-                  <p className="text-[14px] font-bold text-fg sm:text-[15px]">
+                  <p className="text-small font-medium text-fg sm:text-small-sm">
                     {b.title}
                   </p>
                 )}
                 <p
-                  className={`text-[13px] leading-relaxed text-muted sm:text-[14px] ${
+                  className={`text-small text-muted sm:text-small-sm ${
                     b.title ? "mt-2" : ""
                   }`}
                 >
@@ -131,14 +130,14 @@ function SectionBlock({
         <ul className="mt-6 border-l border-border pl-6">
           {section.bullets.map((b) => (
             <li key={b.text} className="relative pb-7 last:pb-0">
-              <span className="absolute -left-[28px] top-[7px] h-[7px] w-[7px] rounded-full bg-accent" />
+              <span className="absolute -left-[28px] top-[7px] h-[7px] w-[7px] rounded-full bg-[color:var(--work-accent)]" />
               {b.title && (
-                <p className="text-[13px] font-semibold text-fg sm:text-[14px]">
+                <p className="text-small font-medium text-fg sm:text-small-sm">
                   {b.title}
                 </p>
               )}
               <p
-                className={`text-[13px] leading-relaxed text-muted sm:text-[14px] ${
+                className={`text-small text-muted sm:text-small-sm ${
                   b.title ? "mt-1.5" : ""
                 }`}
               >
@@ -150,48 +149,56 @@ function SectionBlock({
       )}
 
       {section.table && (
-        <div className="mt-6 -mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">
-          <table className="w-full min-w-[420px] border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-border-strong">
-                {section.table.headers.map((h, i) => (
-                  <th
-                    key={h}
-                    className={`px-3 py-2.5 font-mono text-[11px] font-semibold tracking-[0.1em] text-faint ${
-                      i === 0 ? "text-left" : "text-right"
-                    }`}
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {section.table.rows.map((row, ri) => (
-                <tr
-                  key={row[0]}
-                  className={`border-b border-border ${
-                    ri === 0 ? "bg-accent/5 font-semibold text-fg" : "text-muted"
-                  }`}
-                >
-                  {row.map((cell, i) => (
-                    <td
-                      key={`${row[0]}-${i}`}
-                      className={`px-3 py-2.5 ${
-                        i === 0 ? "text-left" : "tnum text-right font-mono"
+        <div className="mt-6">
+          {/* 狭い画面では表が画面幅に収まらない。-mx-5 で端まで届くので、
+              影が無いと「表はここで終わり」に見えて右の列が読まれない */}
+          <div className="relative">
+            <div className="-mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">
+              <table className="w-full min-w-[420px] border-collapse text-small sm:text-small-sm">
+                <thead>
+                  <tr className="border-b border-border-strong">
+                    {section.table.headers.map((h, i) => (
+                      <th
+                        key={h}
+                        className={`px-3 py-2.5 text-micro font-medium text-faint ${
+                          i === 0 ? "text-left" : "text-right"
+                        }`}
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {section.table.rows.map((row, ri) => (
+                    <tr
+                      key={row[0]}
+                      className={`border-b border-border ${
+                        ri === 0 ? "bg-surface font-medium text-fg" : "text-muted"
                       }`}
                     >
-                      {cell}
-                    </td>
+                      {row.map((cell, i) => (
+                        <td
+                          key={`${row[0]}-${i}`}
+                          className={`px-3 py-2.5 ${
+                            i === 0 ? "text-left" : "tnum text-right"
+                          }`}
+                        >
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+            <div
+              aria-hidden
+              className="pointer-events-none absolute top-0 right-0 bottom-0 w-10 bg-gradient-to-l from-bg to-transparent sm:hidden"
+            />
+          </div>
           {section.table.caption && (
-            <p className="mt-3 text-[12px] leading-relaxed text-faint">
-              {section.table.caption}
-            </p>
+            <p className="mt-3 text-micro text-faint">{section.table.caption}</p>
           )}
         </div>
       )}
@@ -215,14 +222,21 @@ export default async function WorkPage({
     : false;
 
   return (
-    <article className="pb-20 sm:pb-28">
+    <article
+      style={
+        project.accent
+          ? ({ "--work-accent": project.accent } as CSSProperties)
+          : undefined
+      }
+      className="pb-20 sm:pb-28"
+    >
       {/* ------------------------------------------------ ヘッダ */}
       <header className="relative overflow-hidden border-b border-border">
         <div className="pointer-events-none absolute inset-0 bg-grid" aria-hidden />
         <Container width="read" className="relative py-9 sm:py-14">
           <Link
-            href="/#works"
-            className="font-mono text-[11px] tracking-[0.14em] text-faint transition-colors hover:text-accent"
+            href={`/#work-${project.slug}`}
+            className="text-small text-faint underline decoration-border-strong underline-offset-4 transition-colors hover:text-fg"
           >
             ← 一覧に戻る
           </Link>
@@ -231,10 +245,15 @@ export default async function WorkPage({
             <CategoryBadge category={project.category} />
           </div>
 
-          <h1 className="mt-4 text-[1.6rem] leading-[1.35] font-bold tracking-tight sm:text-4xl">
+          <h1 className="mt-4 text-display font-semibold sm:text-display-sm">
             {project.title}
           </h1>
-          <p className="mt-3 text-[14px] leading-relaxed text-muted sm:text-lg">
+          {/* 作品の色はここに 1 本だけ出す（docs/design.md「作品の色」） */}
+          <div
+            aria-hidden
+            className="mt-4 h-0.5 w-16 bg-[color:var(--work-accent)]"
+          />
+          <p className="mt-3 text-body text-muted sm:text-body-sm">
             {project.subtitle}
           </p>
 
@@ -246,7 +265,7 @@ export default async function WorkPage({
                   href={l.href}
                   target="_blank"
                   rel="noreferrer"
-                  className={l.kind === "demo" || l.kind === "store" ? btnPrimary : btnGhost}
+                  className={linkMeta[l.kind].primary ? btnPrimary : btnGhost}
                 >
                   {l.label}
                 </a>
@@ -278,7 +297,7 @@ export default async function WorkPage({
                 <figcaption className="max-w-[17rem] border-border sm:border-l sm:pl-7">
                   <Label className="text-faint">Fig. 01</Label>
                   {project.media.caption && (
-                    <p className="mt-3 text-[13px] leading-relaxed text-muted">
+                    <p className="mt-3 text-small text-muted sm:text-small-sm">
                       {project.media.caption}
                     </p>
                   )}
@@ -296,7 +315,7 @@ export default async function WorkPage({
               className="aspect-[16/10] w-full"
             />
             {project.media.caption && (
-              <figcaption className="mt-3 text-[13px] leading-relaxed text-faint">
+              <figcaption className="mt-3 text-small text-faint sm:text-small-sm">
                 {project.media.caption}
               </figcaption>
             )}
@@ -306,30 +325,30 @@ export default async function WorkPage({
         )}
 
         {project.note && (
-          <p className="mt-6 border-l-2 border-border-strong bg-surface px-4 py-3 text-[12px] leading-relaxed text-faint sm:text-[13px]">
+          <p className="mt-6 border-l-2 border-border-strong bg-surface px-4 py-3 text-micro text-faint sm:text-small">
             <RichText>{project.note}</RichText>
           </p>
         )}
 
         {/* 期間・体制・使用技術の仕様表 */}
         <dl className="mt-8 divide-y divide-border sm:mt-10">
-          <div className="grid gap-1 py-3 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:gap-4">
+          <div className="grid gap-1 py-3 sm:grid-cols-[5rem_minmax(0,1fr)] sm:gap-4">
             <dt>
-              <Label className="text-faint">Period</Label>
+              <Label>期間</Label>
             </dt>
-            <dd className="text-[13px] text-fg sm:text-[14px]">{project.period}</dd>
+            <dd className="text-small text-fg sm:text-small-sm">{project.period}</dd>
           </div>
-          <div className="grid gap-1 py-3 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:gap-4">
+          <div className="grid gap-1 py-3 sm:grid-cols-[5rem_minmax(0,1fr)] sm:gap-4">
             <dt>
-              <Label className="text-faint">Role</Label>
+              <Label>体制</Label>
             </dt>
-            <dd className="text-[13px] leading-relaxed text-fg sm:text-[14px]">
+            <dd className="text-small text-fg sm:text-small-sm">
               {project.role}
             </dd>
           </div>
-          <div className="grid gap-2 py-3 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:gap-4">
+          <div className="grid gap-2 py-3 sm:grid-cols-[5rem_minmax(0,1fr)] sm:gap-4">
             <dt>
-              <Label className="text-faint">Stack</Label>
+              <Label>技術</Label>
             </dt>
             <dd>
               <TechChips items={project.stack} />
@@ -337,7 +356,7 @@ export default async function WorkPage({
           </div>
         </dl>
 
-        <p className="mt-8 text-[14px] leading-[1.95] text-fg sm:mt-10 sm:text-[15px]">
+        <p className="mt-8 text-body text-fg sm:mt-10 sm:text-body-sm">
           <RichText>{project.summary}</RichText>
         </p>
 
@@ -347,9 +366,9 @@ export default async function WorkPage({
           {project.highlights.map((h) => (
             <li
               key={h}
-              className="flex gap-2.5 text-[13px] leading-relaxed text-muted sm:text-[14px]"
+              className="flex gap-2.5 text-small text-muted sm:text-small-sm"
             >
-              <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-accent" />
+              <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[color:var(--work-accent)]" />
               <span>
                 <RichText>{h}</RichText>
               </span>
@@ -367,7 +386,7 @@ export default async function WorkPage({
             >
               <source src={asset(project.video.src)} type="video/mp4" />
             </video>
-            <figcaption className="mt-3 text-[12px] leading-relaxed text-faint sm:text-[13px]">
+            <figcaption className="mt-3 text-micro text-faint sm:text-small">
               {project.video.caption}
             </figcaption>
           </figure>
@@ -388,11 +407,11 @@ export default async function WorkPage({
                 <IndexNo>
                   §{String(project.sections.length + 1).padStart(2, "0")}
                 </IndexNo>
-                <h2 className="text-lg font-bold tracking-tight sm:text-2xl">
+                <h2 className="text-h2 font-semibold sm:text-h2-sm">
                   生成 AI の活用について
                 </h2>
               </div>
-              <p className="mt-4 text-[14px] leading-[1.95] text-muted sm:mt-5 sm:text-[15px]">
+              <p className="mt-4 text-body text-muted sm:mt-5 sm:text-body-sm">
                 本プロジェクトは AI コーディングエージェント（Claude
                 Code）を併用して開発しました。役割分担と、任せきりにしないための仕組みは次のとおりです。
               </p>
@@ -400,9 +419,9 @@ export default async function WorkPage({
                 {project.aiUsage.map((a) => (
                   <li
                     key={a}
-                    className="flex gap-2.5 text-[13px] leading-relaxed text-muted sm:text-[14px]"
+                    className="flex gap-2.5 text-small text-muted sm:text-small-sm"
                   >
-                    <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-accent" />
+                    <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[color:var(--work-accent)]" />
                     <span>
                       <RichText>{a}</RichText>
                     </span>
@@ -417,7 +436,7 @@ export default async function WorkPage({
           <div className="border-t border-border pt-9 sm:pt-12">
             <div className="flex items-baseline gap-3">
               <IndexNo>Fig</IndexNo>
-              <h2 className="text-lg font-bold tracking-tight sm:text-2xl">
+              <h2 className="text-h2 font-semibold sm:text-h2-sm">
                 画面
               </h2>
             </div>
@@ -441,8 +460,8 @@ export default async function WorkPage({
 
         <div className="mt-12 border-t border-border pt-7 sm:mt-16">
           <Link
-            href="/#works"
-            className="font-mono text-[12px] font-bold tracking-[0.1em] text-accent transition-opacity hover:opacity-80"
+            href={`/#work-${project.slug}`}
+            className="text-small font-medium text-fg underline decoration-[color:var(--work-accent)] decoration-2 underline-offset-4 sm:text-small-sm"
           >
             ← ほかの作品を見る
           </Link>

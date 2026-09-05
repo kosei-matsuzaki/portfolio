@@ -10,16 +10,16 @@ import {
 export default function Home() {
   return (
     <>
-      {/* 導入（ヒーロー）と自己紹介（強み・学歴・資格）は 1 つのセクション */}
+      {/* 2 分しか見ない人に先に届けるのは作品。学歴・資格は読み終えた人が見る場所へ回す */}
       <section id="about" className="scroll-mt-20">
         <Hero />
-        <AboutDetails />
       </section>
 
       <WorksSection />
       <ResearchSection />
       <InternshipSection />
       <SkillsSection />
+      <AboutDetails />
     </>
   );
 }

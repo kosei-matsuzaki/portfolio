@@ -9,36 +9,33 @@
 export type Kind = "work" | "research" | "internship";
 export type Category = "ai" | "game" | "app" | "research";
 
-export const categoryMeta: Record<
-  Category,
-  { label: string; className: string; dot: string }
-> = {
-  ai: {
-    label: "AI・機械学習",
-    className: "text-teal border-teal/35 bg-teal/10",
-    dot: "bg-teal",
-  },
-  game: {
-    label: "ゲーム・グラフィックス",
-    className: "text-violet border-violet/35 bg-violet/10",
-    dot: "bg-violet",
-  },
-  app: {
-    label: "アプリ・Web",
-    className: "text-amber border-amber/35 bg-amber/10",
-    dot: "bg-amber",
-  },
-  research: {
-    label: "研究",
-    className: "text-blue border-blue/35 bg-blue/10",
-    dot: "bg-blue",
-  },
+/** 分類の表示名。色は持たない（色は作品自身から借りる。docs/design.md） */
+export const categoryMeta: Record<Category, { label: string }> = {
+  ai: { label: "AI・機械学習" },
+  game: { label: "ゲーム・グラフィックス" },
+  app: { label: "アプリ・Web" },
+  research: { label: "研究" },
 };
 
 export type ProjectLink = {
   label: string;
   href: string;
   kind: "repo" | "demo" | "doc" | "store";
+};
+
+/**
+ * リンクの種類ごとの見せ方。一覧カードは label（「ブラウザで試す（デモ）」など）が
+ * 長すぎるので short に差し替え、詳細ページでは主役のリンクだけボタンを強調する。
+ * Record なので、kind を足すとここを埋めるまで型が通らない。
+ */
+export const linkMeta: Record<
+  ProjectLink["kind"],
+  { short: string; primary: boolean }
+> = {
+  repo: { short: "GitHub", primary: false },
+  demo: { short: "デモ", primary: true },
+  doc: { short: "資料", primary: false },
+  store: { short: "App Store", primary: true },
 };
 
 export type Shot = { src: string; alt: string; caption: string };
@@ -79,6 +76,12 @@ export type Project = {
   highlights: string[];
   metrics: { value: string; label: string }[];
   links: ProjectLink[];
+  /**
+   * その作品の画面から取った色 1 つ（番号・レール・リンクの下線に使う）。
+   * 画像を載せていない作品は持たない = 借りる先が無いので色を作らない。
+   * 選び方は docs/design.md「作品の色」。
+   */
+  accent?: string;
   /** リポジトリ非公開などの注記 */
   note?: string;
   /** 主図版。指定すると一覧カバーと詳細ページ冒頭がこれになる（cover より優先） */
@@ -94,6 +97,7 @@ export const projects: Project[] = [
   /* ---------------------------------------------------------- 競馬 AI */
   {
     slug: "keiba-ai",
+    accent: "#eaa93e",
     kind: "work",
     category: "ai",
     title: "KEIBA AI",
@@ -334,6 +338,7 @@ export const projects: Project[] = [
   /* ------------------------------------------------------- 流体シミュレーション */
   {
     slug: "fluid-lab",
+    accent: "#50c7d8",
     kind: "work",
     category: "game",
     title: "Fluid Lab",
@@ -498,6 +503,7 @@ export const projects: Project[] = [
   /* ---------------------------------------------------------- メダルゲーム */
   {
     slug: "gold-rush",
+    accent: "#ef6fbf",
     kind: "work",
     category: "game",
     title: "GOLD RUSH",
@@ -683,6 +689,7 @@ export const projects: Project[] = [
   /* ---------------------------------------------------------- ピアノ */
   {
     slug: "piano-studio",
+    accent: "#46e2ce",
     kind: "work",
     category: "ai",
     title: "Piano Studio",
@@ -856,6 +863,7 @@ export const projects: Project[] = [
   /* ---------------------------------------------------------- 勉強アプリ */
   {
     slug: "michishirube",
+    accent: "#81a6e4",
     kind: "work",
     category: "app",
     title: "ツミアゲ",
@@ -986,6 +994,7 @@ export const projects: Project[] = [
   /* ------------------------------------------------------------ 旅のしおり */
   {
     slug: "tabishiori",
+    accent: "#6470c4",
     kind: "work",
     category: "app",
     title: "タビシオリ",
@@ -1153,6 +1162,7 @@ export const projects: Project[] = [
   /* ---------------------------------------------------------- チェス AI */
   {
     slug: "chess-ai",
+    accent: "#6187c7",
     kind: "work",
     category: "game",
     title: "Chess AI",

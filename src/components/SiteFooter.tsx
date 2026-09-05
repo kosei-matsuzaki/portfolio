@@ -8,7 +8,7 @@ export function SiteFooter() {
         <Label className="text-faint">
           © {new Date().getFullYear()} {profile.nameEn}
         </Label>
-        <p className="text-[12px] text-faint sm:text-[13px]">
+        <p className="text-micro text-faint sm:text-small">
           掲載作品のソースコードは各リポジトリを参照してください
         </p>
       </Container>

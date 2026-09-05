@@ -1,40 +1,52 @@
 @import "tailwindcss";
 
 /* ===========================================================
-   デザイントークン（色・フォント）
+   デザイントークン（色・書体・字の尺度）
 
-   全体の方向性は「実験ノート／計測レポート」。
-   ・面ではなく罫線（hairline）で領域を区切る
-   ・角丸はほぼ使わない（使っても 2〜4px）
-   ・番号・数値・ラベルは等幅（--font-mono）で、本文はサンセリフ
-   色を変えたいときは基本的にこのブロックだけを触れば全体に反映される
+   方向は「日本語で読ませる作品ノート。色は作品自身から借りる」。
+   規定の全文は docs/design.md。
+   ・面ではなく罫線で区切る
+   ・角丸は使わない（例外は箇条書きの ● と、スマホ端末の図版枠だけ）
+   ・色は作品の識別だけに使う。リンクは色ではなく下線
+   ・等幅はインラインコードだけ。ラベルにも数値にも使わない
    =========================================================== */
 @theme {
-  --color-bg: #07090e;
-  --color-surface: #0c1017;
-  --color-surface-2: #111721;
-  --color-border: #1b2230;
-  --color-border-strong: #2c3646;
-  --color-fg: #e7ecf4;
-  --color-muted: #939fb1;
-  --color-faint: #626e80;
+  --color-bg: #0a0b0e;
+  --color-surface: #0f1116;
+  --color-surface-2: #151820;
+  --color-border: #232733;
+  --color-border-strong: #363c4b;
+  --color-fg: #e9ecf1;
+  --color-muted: #9aa2b0;
+  --color-faint: #6b7382;
 
-  /* アクセント（リンク・番号・強調）。作品の Fluid Lab と同系のラボブルー */
-  --color-accent: #7cc6ff;
-  --color-accent-soft: #0f2c47;
-  /* カテゴリ色 */
-  --color-teal: #5eead4;
-  --color-violet: #b48cff;
-  --color-amber: #fbbf24;
-  --color-blue: #7cc6ff;
-  --color-pink: #f472b6;
-
-  /* --font-inter / --font-mono-src は next/font（layout.tsx）が定義する */
-  --font-sans: var(--font-inter), "Helvetica Neue", "Hiragino Kaku Gothic ProN",
-    "Hiragino Sans", "Noto Sans JP", "Yu Gothic UI", "Meiryo", system-ui,
-    sans-serif;
+  /* --font-*-src は next/font（layout.tsx）が定義する */
+  --font-sans: var(--font-sans-src), "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  --font-serif: var(--font-serif-src), "Hiragino Mincho ProN", "Yu Mincho",
+    "YuMincho", serif;
   --font-mono: var(--font-mono-src), "SFMono-Regular", Consolas,
     "Liberation Mono", Menlo, monospace;
+
+  /* 字の尺度は 6 段だけ。中間値を作らない（docs/design.md） */
+  --text-micro: 0.75rem;      /* 12px */
+  --text-micro--line-height: 1.5;
+  --text-small: 0.8125rem;    /* 13px → sm:14px */
+  --text-small--line-height: 1.7;
+  --text-body: 0.9375rem;     /* 15px → sm:16px */
+  --text-body--line-height: 1.85;
+  --text-h2: 1.25rem;         /* 20px → sm:24px */
+  --text-h2--line-height: 1.4;
+  --text-h1: 1.5rem;          /* 24px → sm:30px */
+  --text-h1--line-height: 1.4;
+  --text-display: 1.875rem;   /* 30px → sm:44px */
+  --text-display--line-height: 1.25;
+
+  --text-small-sm: 0.875rem;  /* 14px */
+  --text-body-sm: 1rem;       /* 16px */
+  --text-h2-sm: 1.5rem;       /* 24px */
+  --text-h1-sm: 1.875rem;     /* 30px */
+  --text-display-sm: 2.75rem; /* 44px */
 }
 
 html {
@@ -47,8 +59,24 @@ body {
   color: var(--color-fg);
   font-family: var(--font-sans);
   font-feature-settings: "palt";
+  font-size: var(--text-body);
   line-height: 1.85;
+  letter-spacing: 0.02em;
   -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 40rem) {
+  body {
+    font-size: var(--text-body-sm);
+  }
+}
+
+/* 見出しは明朝。和文で読ませる意思をここで示す（docs/design.md「書体」） */
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  letter-spacing: 0.01em;
 }
 
 /* 日本語見出しの改行位置を文節単位にする（対応ブラウザのみ） */
@@ -59,8 +87,14 @@ h3 {
 }
 
 ::selection {
-  background-color: var(--color-accent);
-  color: #051a2b;
+  background-color: var(--color-fg);
+  color: var(--color-bg);
+}
+
+/* 作品の色。作品の行・詳細ページが style で上書きし、既定は無彩色
+   （画像を載せていない作品は借りる先が無いので色を作らない） */
+:root {
+  --work-accent: var(--color-fg);
 }
 
 /* 数値は桁を揃える（計測値らしく見せる） */
@@ -92,13 +126,13 @@ h3 {
 .glow {
   background: radial-gradient(
     ellipse 60% 55% at 50% -10%,
-    rgba(124, 198, 255, 0.14),
+    rgba(154, 162, 176, 0.10),
     transparent 70%
   );
 }
 
 /* ------------------------------------------------------------------
-   本文中のリンク下線をアクセント色でアニメーション
+   本文中のリンク下線を、ホバーで左から伸ばす（色は currentColor）
    ------------------------------------------------------------------ */
 .link-underline {
   background-image: linear-gradient(currentColor, currentColor);
@@ -137,7 +171,8 @@ h3 {
    ------------------------------------------------------------------ */
 [data-works-filter="ai"] [data-category]:not([data-category="ai"]),
 [data-works-filter="game"] [data-category]:not([data-category="game"]),
-[data-works-filter="app"] [data-category]:not([data-category="app"]) {
+[data-works-filter="app"] [data-category]:not([data-category="app"]),
+[data-works-filter="research"] [data-category]:not([data-category="research"]) {
   display: none;
 }
 

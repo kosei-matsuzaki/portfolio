@@ -1,21 +1,12 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import Link from "next/link";
-import { categoryMeta, shortRole, works, type Project } from "@/data/projects";
+import { works, type Project } from "@/data/projects";
 import { sizeOf } from "@/data/imageSizes";
 import { asset } from "@/lib/asset";
 import { Clip } from "@/components/Clip";
-import {
-  CategoryBadge,
-  IndexNo,
-  MetaLine,
-  Plate,
-  RAIL,
-  RAIL_GRID,
-  RailDot,
-  RichText,
-  Section,
-  TechIcons,
-} from "@/components/ui";
+import { IndexNo, Plate, RAIL, RAIL_GRID, RailDot, Section } from "@/components/ui";
+import { CategoryBadge, ProjectRowBody } from "@/components/parts";
 import {
   WorksFilterControls,
   WorksFilterList,
@@ -35,15 +26,21 @@ function WorkRow({ project, no }: { project: Project; no: string }) {
 
   return (
     <article
+      id={`work-${project.slug}`}
       data-category={project.category}
       data-reveal
-      className="group border-t border-border py-9 sm:py-12"
+      style={
+        project.accent
+          ? ({ "--work-accent": project.accent } as CSSProperties)
+          : undefined
+      }
+      className="group scroll-mt-20 border-t border-border py-9 sm:py-12"
     >
       <div className={`grid gap-4 ${RAIL_GRID}`}>
         {/* 左段は通し番号だけ。カテゴリは見出しの上に置く（左に余白を作らないため） */}
         <div className={`${RAIL} md:pt-1`}>
           <span className="relative inline-block">
-            <RailDot className={categoryMeta[project.category].dot} />
+            <RailDot />
             <IndexNo>{no}</IndexNo>
           </span>
         </div>
@@ -74,7 +71,9 @@ function WorkRow({ project, no }: { project: Project; no: string }) {
                 className="aspect-[16/10] w-full"
               />
             ) : (
-              <div className="relative aspect-[16/10] w-full overflow-hidden border border-border bg-surface-2">
+              /* 静止画だけの作品は、狭い画面で 16:10 に収めると中の文字が潰れて
+                 「暗い四角」にしか見えない。枠を縦に詰めて左上に寄せ、実質の倍率を上げる */
+              <div className="relative aspect-[4/3] w-full overflow-hidden border border-border bg-surface-2 sm:aspect-[16/10]">
                 {cover && (
                   <Image
                     src={asset(cover.src)}
@@ -82,58 +81,19 @@ function WorkRow({ project, no }: { project: Project; no: string }) {
                     width={size.w}
                     height={size.h}
                     sizes="(max-width: 1024px) 100vw, 500px"
-                    className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.035]"
+                    className="h-full w-full object-cover object-left-top transition-transform duration-700 group-hover:scale-[1.035] sm:object-top"
                   />
                 )}
               </div>
             )}
           </Link>
 
-          <div className="flex flex-col">
-            <CategoryBadge category={project.category} />
-            <h3 className="mt-3 text-xl font-bold tracking-tight sm:text-2xl">
-              <Link href={href} className="transition-colors hover:text-accent">
-                {project.title}
-              </Link>
-            </h3>
-            <p className="mt-2 text-[13px] leading-relaxed text-muted sm:text-[14px]">
-              {project.subtitle}
-            </p>
-
-            <MetaLine
-              className="mt-4"
-              items={[
-                { label: "期間", value: project.period },
-                { label: "体制", value: shortRole(project.role) },
-              ]}
-            />
-
-            <p className="mt-4 line-clamp-4 text-[13px] leading-relaxed text-faint sm:text-[14px]">
-              <RichText>{project.summary}</RichText>
-            </p>
-
-            <TechIcons items={project.stack} max={6} className="mt-5" />
-
-            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
-              <Link
-                href={href}
-                className="font-mono text-[12px] font-bold tracking-[0.1em] text-accent transition-opacity hover:opacity-80"
-              >
-                詳しく見る →
-              </Link>
-              {project.links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-mono text-[11px] tracking-[0.1em] text-faint transition-colors hover:text-fg"
-                >
-                  {l.kind === "demo" ? "デモ ↗" : l.kind === "store" ? "App Store ↗" : "GitHub ↗"}
-                </a>
-              ))}
-            </div>
-          </div>
+          <ProjectRowBody
+            project={project}
+            badge={<CategoryBadge category={project.category} />}
+            cta="詳しく見る"
+            dense
+          />
         </div>
       </div>
     </article>
@@ -146,7 +106,6 @@ export function WorksSection() {
       <Section
         id="works"
         index="01"
-        eyebrow="Works"
         title="個人開発の作品"
         lead="機械学習・グラフィックス・ゲーム・モバイルアプリまで、作りたいものに合わせて技術を選んで作ってきました。"
         aside={<WorksFilterControls />}

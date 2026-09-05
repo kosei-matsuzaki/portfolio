@@ -27,7 +27,7 @@ export function MobileNav({
         aria-label={open ? "メニューを閉じる" : "メニューを開く"}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="flex h-9 w-9 items-center justify-center border border-border-strong text-fg transition-colors hover:border-accent hover:text-accent"
+        className="flex h-9 w-9 items-center justify-center border border-border-strong text-fg transition-colors hover:border-fg"
       >
         <svg
           viewBox="0 0 24 24"
@@ -55,10 +55,10 @@ export function MobileNav({
                 onClick={() => setOpen(false)}
                 className="flex items-baseline gap-3 px-5 py-4 transition-colors hover:bg-surface"
               >
-                <span className="font-mono text-[10px] tracking-[0.2em] text-accent">
+                <span className="text-micro text-faint">
                   {item.index}
                 </span>
-                <span className="font-mono text-[15px] tracking-[0.1em] text-fg uppercase">
+                <span className="text-body text-fg">
                   {item.label}
                 </span>
               </Link>
@@ -68,9 +68,9 @@ export function MobileNav({
               target="_blank"
               rel="noreferrer"
               onClick={() => setOpen(false)}
-              className="px-5 py-4 font-mono text-[13px] tracking-[0.14em] text-muted uppercase"
+              className="px-5 py-4 text-small text-muted"
             >
-              GitHub ↗
+              GitHub
             </a>
           </nav>
         </div>

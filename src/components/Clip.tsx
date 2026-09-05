@@ -5,6 +5,43 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import { sizeOf } from "@/data/imageSizes";
 import { asset } from "@/lib/asset";
 
+/**
+ * ホバーできる入力装置があるかを購読する（SSR では true 扱い）。
+ * 指で触る端末では hover が起きないので、ホバー再生は一生始まらない。
+ */
+function useCanHover() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia("(hover: hover)");
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia("(hover: hover)").matches,
+    () => true,
+  );
+}
+
+type SaveDataConnection = EventTarget & { saveData?: boolean };
+
+/**
+ * 通信量を節約する設定（Save-Data）を購読する（SSR では false 扱い）。
+ * 一覧を最後まで見ると動画が合計 7.5MB 落ちるので、節約したい人には自動再生しない。
+ */
+function useSavesData() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const c = (navigator as Navigator & { connection?: SaveDataConnection })
+        .connection;
+      c?.addEventListener("change", onChange);
+      return () => c?.removeEventListener("change", onChange);
+    },
+    () =>
+      (navigator as Navigator & { connection?: SaveDataConnection }).connection
+        ?.saveData === true,
+    () => false,
+  );
+}
+
 /** OS の「視差効果を減らす」設定を購読する（SSR では false 扱い） */
 function useReducedMotion() {
   return useSyncExternalStore(
@@ -24,7 +61,9 @@ function useReducedMotion() {
  * ・動画の読み込みは「実際に再生する直前」まで行わない（`src` を後から差す）ので、
  *   ページを開いただけで数 MB を落とすことはない
  * ・`playOn="inview"` は画面に入ったら再生・出たら停止（詳細ページ用）
- * ・`playOn="hover"`  はホバー／フォーカス中だけ再生（一覧用。触るまで通信しない）
+ * ・`playOn="hover"`  はホバー／フォーカス中だけ再生（一覧用。触るまで通信しない）。
+ *   ただしホバーできない端末（指で触る画面）では "inview" と同じ扱いにする。
+ *   ここを分けないと、スマホでは一覧の動画が一生再生されない
  * ・prefers-reduced-motion: reduce のときは自動再生せず、再生ボタンを出す
  * ・動画が無い（video 未指定）ときは、ただの静止画として振る舞う
  */
@@ -59,6 +98,12 @@ export function Clip({
       ? "rounded-[1.6rem] border-border-strong shadow-[0_30px_70px_-30px_rgba(0,0,0,0.95)]"
       : "border-border";
   const reduced = useReducedMotion();
+  const canHover = useCanHover();
+  const thrifty = useSavesData();
+  // 自動再生を止める理由は 2 つ。動きを減らしたい人と、通信量を節約したい人
+  const manual = reduced || thrifty;
+  // ホバーできない端末では、一覧も画面内再生に倒す
+  const mode = playOn === "hover" && !canHover ? "inview" : playOn;
   const hostRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [src, setSrc] = useState<string | null>(null);
@@ -86,7 +131,7 @@ export function Clip({
 
   // 画面に入ったら再生・出たら停止
   useEffect(() => {
-    if (!video || playOn !== "inview" || reduced) return;
+    if (!video || mode !== "inview" || manual) return;
     const host = hostRef.current;
     if (!host) return;
     const observer = new IntersectionObserver(
@@ -95,7 +140,7 @@ export function Clip({
     );
     observer.observe(host);
     return () => observer.disconnect();
-  }, [video, playOn, reduced, request]);
+  }, [video, mode, manual, request]);
 
   // src を差した直後は、要素が生成されてから再生する
   useEffect(() => {
@@ -107,7 +152,7 @@ export function Clip({
   }, [src]);
 
   const hoverProps =
-    video && playOn === "hover" && !reduced
+    video && mode === "hover" && !manual
       ? {
           onMouseEnter: () => request(true),
           onMouseLeave: () => request(false),
@@ -150,19 +195,19 @@ export function Clip({
       )}
 
       {/* 一覧では「触れば動く」ことが分からないので、小さく合図を出す */}
-      {video && playOn === "hover" && !reduced && !playing && (
-        <span className="pointer-events-none absolute right-2 bottom-2 border border-border-strong bg-bg/80 px-2 py-0.5 font-mono text-[10px] tracking-[0.14em] text-faint backdrop-blur-sm">
+      {video && mode === "hover" && !manual && !playing && (
+        <span className="pointer-events-none absolute right-2 bottom-2 border border-border-strong bg-bg/80 px-2 py-0.5 text-micro text-faint backdrop-blur-sm">
           ▶ 触れると動く
         </span>
       )}
 
-      {/* 動きを減らす設定のときは、自分の操作で再生できるようにする */}
-      {video && reduced && (
+      {/* 自動再生しないときは、自分の操作で再生できるようにする */}
+      {video && manual && (
         <button
           type="button"
           onClick={() => request(!playing)}
           aria-label={playing ? "動画を停止" : "動画を再生"}
-          className="absolute right-2 bottom-2 border border-border-strong bg-bg/85 px-2.5 py-1 font-mono text-[11px] tracking-[0.1em] text-fg backdrop-blur-sm transition-colors hover:border-accent hover:text-accent"
+          className="absolute right-2 bottom-2 border border-border-strong bg-bg/85 px-2.5 py-1 text-micro text-fg backdrop-blur-sm transition-colors hover:border-fg"
         >
           {playing ? "■ 停止" : "▶ 再生"}
         </button>

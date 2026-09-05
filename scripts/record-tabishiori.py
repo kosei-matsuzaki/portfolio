@@ -351,7 +351,7 @@ def main():
         finish(raw, vid / "hero.mp4")
         poster(vid / "hero.mp4", img / "hero-poster.webp", at=POSTER_AT["hero"])
 
-    print("\n完了。`npm run sizes` を実行してください。")
+    print("\n完了。`npm run sizes` と `npm run assets:sync -- --recorded=tabishiori` を実行してください。")
 
 
 if __name__ == "__main__":

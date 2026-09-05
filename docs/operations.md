@@ -59,6 +59,21 @@ npm run sizes          # 画像サイズ表を再生成
 npm run docs:emit      # 元リポジトリ README の作品説明を projects.ts から生成し直す
 ```
 
+`assets:sync` は**素材をコピーするだけ**で、`assets-state.json` の
+「確認時点（`head`）」と「録画時点（`recorded`）」は動かしません。
+どちらも人が確かめたことを表す値なので、進めるときは作品を名指しします
+（初回だけ、比較の起点として現在の版が入ります）。
+
+```bash
+npm run assets:sync -- fluid-lab                 # その作品の素材だけ取り込む
+npm run assets:sync -- --recorded=michishirube   # 録り直した → 録画時点を進める
+npm run assets:sync -- --reviewed=keiba-ai       # 本文・数値を実態に合わせた → 確認時点を進める
+```
+
+以前は 1 回走らせるだけで全作品の記録が現在の HEAD へ飛んでいました。
+録画していない作品まで「この版で録った」ことになり、次の撮り直しの判断材料が
+消えるので、明示しないと進まない形に変えてあります。
+
 `npm run check` が見るのは次の 4 点です。
 
 | 見るもの | 何が分かるか |
@@ -152,6 +167,8 @@ Flutter 製の 2 本はブラウザ製ではないので専用のスクリプト
 Permission denied で止まります（録画に使うのは見た目だけなので debug で足ります）。
 各スクリプト冒頭の前提を必ず読んでください。
 ヒーロー動画は各クリップから 7 秒ずつ切り出し、0.7 秒のクロスフェードでつないだものです。
+撮り直したら `npm run sizes` のあとに
+`npm run assets:sync -- --recorded=<slug>` で録画時点を進めてください。
 
 ```bash
 ffmpeg -i t1.mp4 -i t2.mp4 -i t3.mp4 -i t4.mp4 -filter_complex \

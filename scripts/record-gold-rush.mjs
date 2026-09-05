@@ -18,6 +18,9 @@
  *   node scripts/record-gold-rush.mjs bowl         # 指定したクリップだけ
  *
  * 後処理は record-fluid-lab.mjs と同じ（mp4 変換 → ポスター切り出し → xfade で連結）。
+ *
+ * 置き終わったら `npm run sizes` と
+ * `npm run assets:sync -- --recorded=gold-rush`（録画時点の記録）を実行する。
  */
 import puppeteer from "puppeteer-core";
 import { mkdirSync } from "node:fs";

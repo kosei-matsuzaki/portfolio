@@ -22,6 +22,9 @@
  *   node scripts/record-piano-studio.mjs compose     # 指定したものだけ
  *
  * 後処理は record-fluid-lab.mjs と同じ（mp4 変換 → ポスター切り出し → xfade で連結）。
+ *
+ * 置き終わったら `npm run sizes` と
+ * `npm run assets:sync -- --recorded=piano-studio`（録画時点の記録）を実行する。
  */
 import puppeteer from "puppeteer-core";
 import { mkdirSync } from "node:fs";

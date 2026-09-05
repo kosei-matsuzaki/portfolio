@@ -15,7 +15,7 @@ npm run build          # out/ に静的書き出し
 npm run lint
 npm run check          # 元リポジトリとのずれを見る（../artifacts/** が要る）
 npm run check -- --refs  # 参照の整合性だけ（元リポジトリが無くても通る。CI もこれ）
-npm run assets:sync    # 元リポジトリから画像・動画を取り込む
+npm run assets:sync    # 元リポジトリから画像・動画を取り込む（記録は --recorded= / --reviewed= で進める）
 npm run sizes          # 画像サイズ表を再生成
 npm run docs:emit      # 元リポジトリ README の作品説明を projects.ts から生成
 npm run icons          # 技術アイコンを simple-icons から再生成

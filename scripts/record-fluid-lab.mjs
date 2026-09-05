@@ -13,6 +13,9 @@
  *   node scripts/record-fluid-lab.mjs            # 4 モードすべて
  *   node scripts/record-fluid-lab.mjs earth      # 指定したモードだけ
  *
+ * 置き終わったら `npm run sizes` と
+ * `npm run assets:sync -- --recorded=fluid-lab`（録画時点の記録）を実行する。
+ *
  * 録画後の仕上げ（rec/ の中で実行）:
  *   ffmpeg -i <name>.webm -vf "fps=30,scale=1280:800:flags=lanczos" \
  *     -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p -an \

@@ -38,10 +38,10 @@
   },
   "michishirube": {
     "repo": "artifacts/study-app",
-    "head": "2d0f227cd3fbddf27713e0795dd8dd2e371c1398",
+    "head": "a3f45bfb7465ebac14a1893fd2f03791d74dcc54",
     "copied": {},
     "recorded": {
-      "public/video/michishirube": "d37a017a37992fb3bc461d7b1513213ed64d922b"
+      "public/video/michishirube": "a3f45bfb7465ebac14a1893fd2f03791d74dcc54"
     }
   },
   "tabishiori": {

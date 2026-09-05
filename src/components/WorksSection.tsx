@@ -107,7 +107,7 @@ export function WorksSection() {
         id="works"
         index="01"
         title="個人開発の作品"
-        lead="機械学習・グラフィックス・ゲーム・モバイルアプリまで、作りたいものに合わせて技術を選んで作ってきました。"
+        lead="どれも個人開発です。何を作るかから自分で決めています。"
         aside={<WorksFilterControls />}
       >
         <WorksFilterList>

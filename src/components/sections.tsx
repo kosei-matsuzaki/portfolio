@@ -136,7 +136,7 @@ export function ResearchSection() {
       id="research"
       index="02"
       title="研究"
-      lead="手法を提案するだけでなく、公平に比較できる実験基盤をつくり、うまくいかなかった結果も含めて報告することを重視しています。"
+      lead="提案する手法だけでなく、それを公平に比較するための実験基盤から自分で作っています。"
     >
       <div>
         {researchProjects.map((p, i) => (
@@ -160,7 +160,7 @@ export function InternshipSection() {
       id="internship"
       index="03"
       title="インターンシップ"
-      lead="チームで開発した経験です。"
+      lead="個人開発と違い、同じコードベースを他の人と触った記録です。"
     >
       <div>
         {internships.map((p, i) => (

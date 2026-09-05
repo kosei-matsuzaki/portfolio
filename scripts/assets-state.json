@@ -38,7 +38,7 @@
   },
   "michishirube": {
     "repo": "artifacts/study-app",
-    "head": "087524c9099fe466178da569397b345513628156",
+    "head": "2d0f227cd3fbddf27713e0795dd8dd2e371c1398",
     "copied": {},
     "recorded": {
       "public/video/michishirube": "d37a017a37992fb3bc461d7b1513213ed64d922b"
@@ -46,10 +46,10 @@
   },
   "tabishiori": {
     "repo": "artifacts/travel-app",
-    "head": "c8dfb482b00e2ef300569182389c126815897a84",
+    "head": "0c069c7a4cbfe4c4ef170c65c8af7b311e976f20",
     "copied": {},
     "recorded": {
-      "public/video/tabishiori": "c8dfb482b00e2ef300569182389c126815897a84"
+      "public/video/tabishiori": "0c069c7a4cbfe4c4ef170c65c8af7b311e976f20"
     }
   },
   "chess-ai": {

@@ -110,15 +110,16 @@ for (const src of sources) {
     } else {
       lines.push(
         c.yellow(
-          `! 取り込み後にコード変更が ${code ?? "?"} コミット進んでいます（最新: ${git.short} ${git.date} ${git.subject}）`,
+          `! 本文を確かめた版からコード変更が ${code ?? "?"} コミット進んでいます（最新: ${git.short} ${git.date} ${git.subject}）`,
         ),
       );
       warnings++;
       lines.push(c.dim("  → 本文・数値（metrics）が実態と合っているか確認してください"));
+      lines.push(c.dim(`     合っていれば: npm run assets:sync -- --reviewed=${src.slug}`));
     }
   }
   if (git && !prev) {
-    lines.push(c.dim("· まだ一度も取り込んでいません（npm run assets:sync）"));
+    lines.push(c.dim("· まだ記録がありません（npm run assets:sync）"));
   }
 
   // --- 録画素材: 録画時点より元が進んでいるか
@@ -135,6 +136,7 @@ for (const src of sources) {
         c.yellow(`! 録画後にコード変更が ${code ?? "?"} コミット進んでいます（${rec.dir}）`),
       );
       lines.push(c.dim(`  → 見た目が変わっていれば撮り直し: ${rec.command}`));
+      lines.push(c.dim(`     変わっていなければ: npm run assets:sync -- --recorded=${src.slug}`));
       warnings++;
     }
   }
@@ -213,7 +215,8 @@ if (warnings || errors) {
       "\n取り込み直す: npm run assets:sync && npm run sizes\n" +
         "録画し直す  : scripts/record-*.mjs（冒頭のコメントに手順）\n" +
         "本文を直す  : src/data/projects.ts\n" +
-        "書き戻す    : npm run docs:emit（そのあと各リポジトリでコミット）",
+        "書き戻す    : npm run docs:emit（そのあと各リポジトリでコミット）\n" +
+        "確かめた印  : npm run assets:sync -- --reviewed=<作品> / --recorded=<作品>",
     ),
   );
 }

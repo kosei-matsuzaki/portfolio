@@ -70,7 +70,7 @@ export function commitsSince(repoRel, from, { codeOnly = false } = {}) {
     return +execFileSync(
       "git",
       ["-C", dir, "rev-list", "--count", `${from}..HEAD`, ...paths],
-      { encoding: "utf8" },
+      { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
     ).trim();
   } catch {
     return null;

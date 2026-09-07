@@ -31,9 +31,12 @@ export function expand(entry, repoRel) {
   const to = join(ROOT, entry.to);
   if (!existsSync(from)) return { missing: true, pairs: [] };
   if (statSync(from).isDirectory()) {
+    const except = new Set(entry.except ?? []);
     return {
       missing: false,
-      pairs: walk(from).map((f) => [f, join(to, relative(from, f))]),
+      pairs: walk(from)
+        .filter((f) => !except.has(relative(from, f).split("\\").join("/")))
+        .map((f) => [f, join(to, relative(from, f))]),
     };
   }
   return { missing: false, pairs: [[from, to]] };

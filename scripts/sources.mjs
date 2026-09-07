@@ -6,7 +6,8 @@
  * 作品を追加したら、ここにも 1 件足すこと。
  *
  * - `repo`     : private_production からの相対パス（git リポジトリなら更新を追える）
- * - `copy`     : 元リポジトリからそのままコピーする素材
+ * - `copy`     : 元リポジトリからそのままコピーする素材。`from` がディレクトリのときは
+ *                `except` で個別に外せる（元では要るが、サイトでは載せない素材）
  * - `recorded` : 元リポジトリを動かして録画・生成した素材（コピーではないので自動同期できない）
  * - `emit`     : 逆向き。projects.ts から元リポジトリの作品説明を書き戻す先。
  *                `doc` は README.md（GitHub で最初に見えるのがここなので）。ファイル全体では
@@ -20,7 +21,13 @@ export const sources = [
     title: "KEIBA AI",
     repo: "artifacts/keiba-ai",
     copy: [
-      { from: "docs/images", to: "public/images/keiba-ai" },
+      {
+        from: "docs/images",
+        to: "public/images/keiba-ai",
+        // 対応する画面が /models に統合されて無くなった。元では解説動画の manim
+        // スクリプト（docs/explainer/model-explainer.py）がまだ使っている
+        except: ["dashboard.png"],
+      },
       { from: "docs/explainer/model-explainer.mp4", to: "public/video/keiba-model-explainer.mp4" },
     ],
     emit: { doc: "README.md", images: "docs/portfolio" },

@@ -1,14 +1,13 @@
 {
   "keiba-ai": {
     "repo": "artifacts/keiba-ai",
-    "head": "931ee4bb22bfc31e53405acaf1ee2e5fda881549",
+    "head": "e1df9f6c129f60560adaa32fdecbbabcd9e011c0",
     "copied": {
-      "/images/keiba-ai/dashboard.png": "1abc9b6f89b73e3b",
-      "/images/keiba-ai/ledger.png": "f9828e870dd8cafa",
+      "/images/keiba-ai/ledger.png": "e69cfb99cbe55453",
       "/images/keiba-ai/model-explainer-poster.png": "c19bce643b76eded",
-      "/images/keiba-ai/models.png": "b204091325d74ef2",
-      "/images/keiba-ai/race-detail.png": "95aa5bb87dad6d5e",
-      "/images/keiba-ai/race-list.png": "160647d88ff7d3ad",
+      "/images/keiba-ai/models.png": "3d692a7aab38d075",
+      "/images/keiba-ai/race-detail.png": "5108e0437d722cf1",
+      "/images/keiba-ai/race-list.png": "7fcc0cff2b2d1434",
       "/video/keiba-model-explainer.mp4": "afdc2f4bd4f1db5c"
     }
   },

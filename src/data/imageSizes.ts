@@ -14,7 +14,7 @@ export const imageSizes: Record<string, { w: number; h: number }> = {
   "/images/gold-rush/gameplay-poster.webp": { w: 1280, h: 800 },
   "/images/gold-rush/hero-poster.webp": { w: 1280, h: 800 },
   "/images/gold-rush/sugoroku-poster.webp": { w: 1280, h: 800 },
-  "/images/keiba-ai/ledger.png": { w: 1440, h: 2000 },
+  "/images/keiba-ai/ledger.png": { w: 1440, h: 1140 },
   "/images/keiba-ai/model-explainer-poster.png": { w: 1920, h: 1080 },
   "/images/keiba-ai/models.png": { w: 1440, h: 900 },
   "/images/keiba-ai/race-detail.png": { w: 1440, h: 1435 },

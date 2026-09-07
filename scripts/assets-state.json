@@ -1,9 +1,9 @@
 {
   "keiba-ai": {
     "repo": "artifacts/keiba-ai",
-    "head": "e1df9f6c129f60560adaa32fdecbbabcd9e011c0",
+    "head": "c0476d9fe9f4c8747ae4f87a2b9e9d555bfc483d",
     "copied": {
-      "/images/keiba-ai/ledger.png": "e69cfb99cbe55453",
+      "/images/keiba-ai/ledger.png": "0d2e051d7b2bbc55",
       "/images/keiba-ai/model-explainer-poster.png": "c19bce643b76eded",
       "/images/keiba-ai/models.png": "3d692a7aab38d075",
       "/images/keiba-ai/race-detail.png": "5108e0437d722cf1",

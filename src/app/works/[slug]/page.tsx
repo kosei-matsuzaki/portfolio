@@ -16,7 +16,6 @@ import {
   IndexNo,
   Label,
   MetricList,
-  Bleed,
   Plate,
   RichText,
   btnGhost,
@@ -307,28 +306,22 @@ export default async function WorkPage({
             </Plate>
           </figure>
         ) : project.media ? (
-          <Bleed>
-            <figure>
-              <Clip
-                poster={project.media.poster}
-                video={project.media.video}
-                alt={project.media.alt}
-                priority
-                className="aspect-[16/10] w-full"
-              />
-              {project.media.caption && (
-                <figcaption className="mt-3 text-small text-faint sm:text-small-sm">
-                  {project.media.caption}
-                </figcaption>
-              )}
-            </figure>
-          </Bleed>
+          <figure>
+            <Clip
+              poster={project.media.poster}
+              video={project.media.video}
+              alt={project.media.alt}
+              priority
+              className="aspect-[16/10] w-full"
+            />
+            {project.media.caption && (
+              <figcaption className="mt-3 text-small text-faint sm:text-small-sm">
+                {project.media.caption}
+              </figcaption>
+            )}
+          </figure>
         ) : (
-          project.cover && (
-            <Bleed>
-              <Shot {...project.cover} plate="FIG. 01" priority />
-            </Bleed>
-          )
+          project.cover && <Shot {...project.cover} plate="FIG. 01" priority />
         )}
 
         {project.note && (
@@ -384,8 +377,7 @@ export default async function WorkPage({
         </ul>
 
         {project.video && (
-          <Bleed className="mt-10 sm:mt-12">
-            <figure>
+          <figure className="mt-10 sm:mt-12">
             <video
               controls
               preload="none"
@@ -394,11 +386,10 @@ export default async function WorkPage({
             >
               <source src={asset(project.video.src)} type="video/mp4" />
             </video>
-              <figcaption className="mt-3 text-micro text-faint sm:text-small">
-                {project.video.caption}
-              </figcaption>
-            </figure>
-          </Bleed>
+            <figcaption className="mt-3 text-micro text-faint sm:text-small">
+              {project.video.caption}
+            </figcaption>
+          </figure>
         )}
 
         <div className="mt-12 sm:mt-16">
@@ -449,7 +440,7 @@ export default async function WorkPage({
                 画面
               </h2>
             </div>
-            <Bleed
+            <div
               className={
                 portraitShots
                   ? "mt-6 grid grid-cols-2 gap-4 sm:mt-8 sm:grid-cols-4 sm:gap-5"
@@ -463,7 +454,7 @@ export default async function WorkPage({
                   plate={`FIG. ${String(i + (project.cover ? 2 : 1)).padStart(2, "0")}`}
                 />
               ))}
-            </Bleed>
+            </div>
           </div>
         )}
 

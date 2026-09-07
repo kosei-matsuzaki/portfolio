@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
    レイアウトの基準（左右の余白と最大幅はここだけで決める）
      gutter : px-5 → sm:px-8 → lg:px-10
      wide   : 一覧・セクション用の最大幅
-     read   : 詳細ページの読み物カラム（1行の文字数を抑える）
+     read   : 詳細ページの 1 カラム。本文も図版も同じ幅に置く
    ------------------------------------------------------------------ */
 export const GUTTER = "px-5 sm:px-8 lg:px-10";
 
@@ -17,33 +17,9 @@ export function Container({
   className?: string;
   width?: "wide" | "read";
 }) {
-  const max = width === "read" ? "max-w-[800px]" : "max-w-[1140px]";
+  const max = width === "read" ? "max-w-[920px]" : "max-w-[1140px]";
   return (
     <div className={`mx-auto w-full ${max} ${GUTTER} ${className}`}>
-      {children}
-    </div>
-  );
-}
-
-/**
- * `Container width="read"` の中で、図版だけを `wide` の幅まで広げる。
- * 2 つの最大幅は**クラス文字列に直接書く** — 変数から組み立てると Tailwind が
- * クラスを見つけられず、余白が 0 のまま静かに効かなくなる。
- * 左右に伸ばす量は 2 つの最大幅の差の半分で、画面が read より狭いときは
- * 差が 0 になって何も起きない（スマホでは本文と同じ幅のまま）。
- * gutter は親が持っているので、ここでは足さない。
- */
-export function Bleed({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={`mx-[calc((min(800px,100vw)-min(1140px,100vw))/2)] ${className}`}
-    >
       {children}
     </div>
   );

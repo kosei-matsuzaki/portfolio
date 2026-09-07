@@ -385,7 +385,9 @@ export default async function WorkPage({
         </div>
         </div>
 
-        <MetricList metrics={project.metrics} className="mt-10 sm:mt-12" />
+        {project.metrics && (
+          <MetricList metrics={project.metrics} className="mt-10 sm:mt-12" />
+        )}
 
         {project.video && (
           <figure className="mt-10 sm:mt-12">

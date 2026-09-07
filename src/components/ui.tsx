@@ -3,23 +3,19 @@ import type { ReactNode } from "react";
 /* ------------------------------------------------------------------
    レイアウトの基準（左右の余白と最大幅はここだけで決める）
      gutter : px-5 → sm:px-8 → lg:px-10
-     wide   : 一覧・セクション用の最大幅
-     read   : 詳細ページの 1 カラム。本文も図版も同じ幅に置く
+     最大幅 : 1140px。トップも作品詳細も同じ幅で、ページごとに変えない
    ------------------------------------------------------------------ */
 export const GUTTER = "px-5 sm:px-8 lg:px-10";
 
 export function Container({
   children,
   className = "",
-  width = "wide",
 }: {
   children: ReactNode;
   className?: string;
-  width?: "wide" | "read";
 }) {
-  const max = width === "read" ? "max-w-[920px]" : "max-w-[1140px]";
   return (
-    <div className={`mx-auto w-full ${max} ${GUTTER} ${className}`}>
+    <div className={`mx-auto w-full max-w-[1140px] ${GUTTER} ${className}`}>
       {children}
     </div>
   );

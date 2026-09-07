@@ -41,6 +41,9 @@ export async function generateMetadata({
   };
 }
 
+/** 広い画面での本文の組み: 左段に見出し、右に本文 */
+const SECTION_GRID = "lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-x-12";
+
 function SectionBlock({
   section,
   no,
@@ -53,15 +56,17 @@ function SectionBlock({
   return (
     <section
       data-reveal
-      className="scroll-mt-24 border-t border-border py-9 first:border-t-0 first:pt-0 sm:py-12"
+      className={`scroll-mt-24 border-t border-border py-9 first:border-t-0 first:pt-0 sm:py-12 ${SECTION_GRID}`}
     >
-      <div className="flex items-baseline gap-3">
+      {/* 広い画面では見出しを左段に出す。本文の 1 行が伸びすぎず、右側も余らない */}
+      <div className="flex items-baseline gap-3 lg:block lg:gap-0">
         <IndexNo>§{no}</IndexNo>
-        <h2 className="text-h2 font-semibold sm:text-h2-sm">
+        <h2 className="text-h2 font-semibold sm:text-h2-sm lg:mt-2">
           {section.heading}
         </h2>
       </div>
 
+      <div className="lg:[&>*:first-child]:mt-0">
       {section.body?.map((p) => (
         <p
           key={p}
@@ -73,8 +78,7 @@ function SectionBlock({
 
       {/* 図版つきの箇条書き: 図と説明を左右交互に並べる */}
       {section.bullets && hasMedia && (
-        /* 図版は読み物カラムより少しはみ出させて大きく見せる */
-        <ul className="mt-7 space-y-8 sm:space-y-10 lg:-mx-16 xl:-mx-[7.5rem]">
+        <ul className="mt-7 space-y-8 sm:space-y-10">
           {section.bullets.map((b, i) => (
             <li
               key={b.text}
@@ -204,6 +208,7 @@ function SectionBlock({
       )}
 
       {section.figure && <Figure {...section.figure} />}
+      </div>
     </section>
   );
 }
@@ -233,7 +238,7 @@ export default async function WorkPage({
       {/* ------------------------------------------------ ヘッダ */}
       <header className="relative overflow-hidden border-b border-border">
         <div className="pointer-events-none absolute inset-0 bg-grid" aria-hidden />
-        <Container width="read" className="relative py-9 sm:py-14">
+        <Container className="relative py-9 sm:py-14">
           <Link
             href={`/#work-${project.slug}`}
             className="text-small text-faint underline decoration-border-strong underline-offset-4 transition-colors hover:text-fg"
@@ -277,14 +282,17 @@ export default async function WorkPage({
       </header>
 
       {/* ------------------------------------------------ 本文（左右の余白は全ブロック共通） */}
-      <Container width="read" className="pt-8 sm:pt-12">
+      <Container className="pt-8 sm:pt-12">
+        {/* 広い画面では主図版とメタ・概要を横に並べる（縦に積むと導入だけで 1 画面使う） */}
+        <div className="lg:grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-start lg:gap-x-12">
         {/* 主図版は本文より先に置く（何が動くのかを最初に見せる） */}
         {project.media?.portrait ? (
           /* スマホの縦長画面は、方眼の台に端末を立てて説明を横に添える
              （16:10 に収めると中身が読めず、そのまま置くと横が空きすぎるため） */
+          /* 説明は端末の下。導入は 2 段組みなので、横に添えると入る幅が無い */
           <figure>
             <Plate className="px-6 py-8 sm:px-10 sm:py-10">
-              <div className="flex flex-col items-center gap-7 sm:flex-row sm:justify-center sm:gap-10">
+              <div className="flex flex-col items-center gap-7">
                 <Clip
                   poster={project.media.poster}
                   video={project.media.video}
@@ -294,10 +302,10 @@ export default async function WorkPage({
                   sizes="300px"
                   className="aspect-[390/844] w-[min(100%,290px)] shrink-0"
                 />
-                <figcaption className="max-w-[17rem] border-border sm:border-l sm:pl-7">
+                <figcaption className="max-w-[24rem] border-t border-border pt-5 text-center">
                   <Label className="text-faint">Fig. 01</Label>
                   {project.media.caption && (
-                    <p className="mt-3 text-small text-muted sm:text-small-sm">
+                    <p className="mt-2 text-small text-muted sm:text-small-sm">
                       {project.media.caption}
                     </p>
                   )}
@@ -324,6 +332,7 @@ export default async function WorkPage({
           project.cover && <Shot {...project.cover} plate="FIG. 01" priority />
         )}
 
+        <div className="lg:[&>*:first-child]:mt-0">
         {project.note && (
           <p className="mt-6 border-l-2 border-border-strong bg-surface px-4 py-3 text-micro text-faint sm:text-small">
             <RichText>{project.note}</RichText>
@@ -360,8 +369,6 @@ export default async function WorkPage({
           <RichText>{project.summary}</RichText>
         </p>
 
-        <MetricList metrics={project.metrics} className="mt-8" />
-
         <ul className="mt-6 space-y-2.5">
           {project.highlights.map((h) => (
             <li
@@ -375,6 +382,10 @@ export default async function WorkPage({
             </li>
           ))}
         </ul>
+        </div>
+        </div>
+
+        <MetricList metrics={project.metrics} className="mt-10 sm:mt-12" />
 
         {project.video && (
           <figure className="mt-10 sm:mt-12">
@@ -402,15 +413,19 @@ export default async function WorkPage({
           ))}
 
           {project.aiUsage && (
-            <section data-reveal className="border-t border-border py-9 sm:py-12">
-              <div className="flex items-baseline gap-3">
+            <section
+              data-reveal
+              className={`border-t border-border py-9 sm:py-12 ${SECTION_GRID}`}
+            >
+              <div className="flex items-baseline gap-3 lg:block lg:gap-0">
                 <IndexNo>
                   §{String(project.sections.length + 1).padStart(2, "0")}
                 </IndexNo>
-                <h2 className="text-h2 font-semibold sm:text-h2-sm">
+                <h2 className="text-h2 font-semibold sm:text-h2-sm lg:mt-2">
                   生成 AI の活用について
                 </h2>
               </div>
+              <div className="lg:[&>*:first-child]:mt-0">
               <p className="mt-4 text-body text-muted sm:mt-5 sm:text-body-sm">
                 AI コーディングエージェント（Claude
                 Code）を併用して開発しました。役割分担と、任せきりにしないための仕組みは次のとおりです。
@@ -428,6 +443,7 @@ export default async function WorkPage({
                   </li>
                 ))}
               </ul>
+              </div>
             </section>
           )}
         </div>

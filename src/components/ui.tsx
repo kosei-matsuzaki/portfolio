@@ -17,9 +17,33 @@ export function Container({
   className?: string;
   width?: "wide" | "read";
 }) {
-  const max = width === "read" ? "max-w-[660px]" : "max-w-[1140px]";
+  const max = width === "read" ? "max-w-[800px]" : "max-w-[1140px]";
   return (
     <div className={`mx-auto w-full ${max} ${GUTTER} ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * `Container width="read"` の中で、図版だけを `wide` の幅まで広げる。
+ * 2 つの最大幅は**クラス文字列に直接書く** — 変数から組み立てると Tailwind が
+ * クラスを見つけられず、余白が 0 のまま静かに効かなくなる。
+ * 左右に伸ばす量は 2 つの最大幅の差の半分で、画面が read より狭いときは
+ * 差が 0 になって何も起きない（スマホでは本文と同じ幅のまま）。
+ * gutter は親が持っているので、ここでは足さない。
+ */
+export function Bleed({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`mx-[calc((min(800px,100vw)-min(1140px,100vw))/2)] ${className}`}
+    >
       {children}
     </div>
   );

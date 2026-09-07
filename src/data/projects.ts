@@ -97,7 +97,7 @@ export const projects: Project[] = [
   /* ---------------------------------------------------------- 競馬 AI */
   {
     slug: "keiba-ai",
-    accent: "#eaa93e",
+    accent: "#4abdcf",
     kind: "work",
     category: "ai",
     title: "KEIBA AI",

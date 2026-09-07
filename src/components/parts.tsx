@@ -147,7 +147,7 @@ export function Shot({
           width={w}
           height={h}
           priority={priority}
-          sizes="(max-width: 768px) 100vw, 900px"
+          sizes="(max-width: 768px) 100vw, 1060px"
           className="h-auto w-full"
         />
         {plate && (

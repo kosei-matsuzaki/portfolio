@@ -1,14 +1,14 @@
 {
   "keiba-ai": {
     "repo": "artifacts/keiba-ai",
-    "head": "ac988a532bac78f117eecaa7670ed306e1c98a0f",
+    "head": "7b0612a5dabbe816da60965acdb4430656a15377",
     "copied": {
       "/images/keiba-ai/ledger.png": "0d2e051d7b2bbc55",
-      "/images/keiba-ai/model-explainer-poster.png": "c19bce643b76eded",
+      "/images/keiba-ai/model-explainer-poster.png": "c870127dbc8b1ac7",
       "/images/keiba-ai/models.png": "3d692a7aab38d075",
       "/images/keiba-ai/race-detail.png": "5108e0437d722cf1",
       "/images/keiba-ai/race-list.png": "7fcc0cff2b2d1434",
-      "/video/keiba-model-explainer.mp4": "afdc2f4bd4f1db5c"
+      "/video/keiba-model-explainer.mp4": "a4916b1af4cacde2"
     }
   },
   "fluid-lab": {

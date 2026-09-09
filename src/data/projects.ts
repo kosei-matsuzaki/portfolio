@@ -140,7 +140,7 @@ export const projects: Project[] = [
       src: "/video/keiba-model-explainer.mp4",
       poster: "/images/keiba-ai/model-explainer-poster.png",
       caption:
-        "モデルの計算過程（能力推定 → self-attention → 確率導出 → 買い目提案）を manim で可視化した解説動画",
+        "モデルの計算過程を manim で可視化した解説動画（8 幕・2 分 34 秒）。能力ベクトルの作り方 → Set Transformer の self-attention → オッズの合成と全券種の確率 → 学習則",
     },
     shots: [
       {

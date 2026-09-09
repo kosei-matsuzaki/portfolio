@@ -235,6 +235,9 @@ bullets: [{ title: "...", text: "...", media: { poster, video, alt, caption } }]
 「（継続開発中）」「（約3週間）」のような補足は入れない（継続中かは `〜` で分かる）。
 年月は元リポジトリの最初と最後のコミットで裏を取ること。
 
+**その下に出る「最終更新」は手で書かない。**このサイトを直した日を git 履歴から
+生成している（`src/data/updatedAt.ts`。出し方は [operations.md](operations.md)）。
+
 ## 文章の書き方
 
 `projects.ts` に書くのは **何ができるか・何を工夫したか** で、開発の経過ではない。

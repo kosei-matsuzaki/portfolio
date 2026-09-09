@@ -17,6 +17,7 @@ npm run check          # 元リポジトリとのずれを見る（../artifacts/
 npm run check -- --refs  # 参照の整合性だけ（元リポジトリが無くても通る。CI もこれ）
 npm run assets:sync    # 元リポジトリから画像・動画を取り込む（記録は --recorded= / --reviewed= で進める）
 npm run sizes          # 画像サイズ表を再生成
+npm run updated        # 作品ごとの最終更新日を git 履歴から再生成（build 前に自動で走る）
 npm run docs:emit      # 元リポジトリ README の作品説明を projects.ts から生成
 npm run icons          # 技術アイコンを simple-icons から再生成
 ```
@@ -60,6 +61,7 @@ npm run icons          # 技術アイコンを simple-icons から再生成
 
 - `src/data/techIcons.generated.ts` — `npm run icons` が上書きする
 - `src/data/imageSizes.ts` — `npm run sizes` が上書きする
+- `src/data/updatedAt.ts` — `npm run updated`（と `prebuild`）が上書きする
 - `scripts/assets-state.json` — `npm run assets:sync` が書く取り込み記録
 - `AGENTS.md` — `next dev` が生成・再追加する
 - `out/` `.next/` — ビルド成果物

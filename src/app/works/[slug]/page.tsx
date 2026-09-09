@@ -9,6 +9,7 @@ import {
   type Section as SectionData,
 } from "@/data/projects";
 import { isPortrait } from "@/data/imageSizes";
+import { updatedAt } from "@/data/updatedAt";
 import { asset } from "@/lib/asset";
 import { Clip } from "@/components/Clip";
 import {
@@ -213,6 +214,12 @@ function SectionBlock({
   );
 }
 
+/** "2026-09-07" → "2026年9月7日"。`period` と同じ書き方にそろえる */
+function jpDate(iso: string) {
+  const [y, m, d] = iso.split("-");
+  return `${y}年${Number(m)}月${Number(d)}日`;
+}
+
 export default async function WorkPage({
   params,
 }: {
@@ -363,6 +370,18 @@ export default async function WorkPage({
               <TechChips items={project.stack} />
             </dd>
           </div>
+          {updatedAt[project.slug] && (
+            <div className="grid gap-1 py-3 sm:grid-cols-[5rem_minmax(0,1fr)] sm:gap-4">
+              <dt>
+                <Label>最終更新</Label>
+              </dt>
+              <dd className="text-small text-fg sm:text-small-sm">
+                <time dateTime={updatedAt[project.slug]}>
+                  {jpDate(updatedAt[project.slug])}
+                </time>
+              </dd>
+            </div>
+          )}
         </dl>
 
         <p className="mt-8 text-body text-fg sm:mt-10 sm:text-body-sm">
